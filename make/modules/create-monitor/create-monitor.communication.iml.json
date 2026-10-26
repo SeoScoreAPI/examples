@@ -1,0 +1,14 @@
+{
+    "url": "/monitors",
+    "method": "POST",
+    "type": "json",
+    "body": {
+        "url": "{{parameters.url}}",
+        "frequency": "{{parameters.frequency}}",
+        "webhook_url": "{{parameters.webhook_url}}",
+        "alert_threshold": "{{parameters.alert_threshold}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

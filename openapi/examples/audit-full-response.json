@@ -1,0 +1,805 @@
+{
+  "url": "https://seoscoreapi.com",
+  "score": 91.546,
+  "grade": "A+",
+  "response_code": 200,
+  "response_time": "0.22s",
+  "html_truncated": false,
+  "audit": {
+    "meta": {
+      "score": 87.75,
+      "checks": [
+        {
+          "name": "title",
+          "status": "warning",
+          "value": "SEO Score API \u2014 Free SEO Audit API, 80+ Checks per URL, JSON in Seconds",
+          "score": 60,
+          "recommendation": "Title may be truncated (71 chars). Keep under 60."
+        },
+        {
+          "name": "meta_description",
+          "status": "warning",
+          "value": "Free SEO Score API: 80+ checks per URL (50+ scored on the free tier), scored JSON in seconds \u2014 on-page, speed, accessibility & AI readability. No credit card, start auditing free.",
+          "score": 60,
+          "recommendation": "Description may be truncated (179 chars). Keep under 160."
+        },
+        {
+          "name": "h1",
+          "status": "pass",
+          "value": 1,
+          "score": 100
+        },
+        {
+          "name": "heading_hierarchy",
+          "status": "info",
+          "value": {
+            "h1": 1,
+            "h2": 10,
+            "h3": 4,
+            "h4": 0,
+            "h5": 0,
+            "h6": 0
+          },
+          "score": 100
+        },
+        {
+          "name": "content_length",
+          "status": "pass",
+          "value": 2925,
+          "score": 100
+        },
+        {
+          "name": "readability",
+          "status": "info",
+          "value": {
+            "word_count": 2925,
+            "sentence_count": 176,
+            "avg_sentence_length": 16.6,
+            "readability_score": 82
+          },
+          "score": 82
+        },
+        {
+          "name": "image_alt",
+          "status": "pass",
+          "value": {
+            "total": 3,
+            "missing_alt": 0,
+            "coverage": "100%"
+          },
+          "score": 100
+        },
+        {
+          "name": "links",
+          "status": "info",
+          "value": {
+            "total": 110,
+            "internal": 98,
+            "external": 12
+          },
+          "score": 100
+        }
+      ]
+    },
+    "technical": {
+      "score": 91.111,
+      "checks": [
+        {
+          "name": "response_time",
+          "status": "pass",
+          "value": "0.22s",
+          "score": 100
+        },
+        {
+          "name": "https",
+          "status": "pass",
+          "value": true,
+          "score": 100
+        },
+        {
+          "name": "ssl_cert",
+          "status": "pass",
+          "value": {
+            "valid": true,
+            "expires": "Dec  2 20:36:40 2026 GMT"
+          },
+          "score": 100
+        },
+        {
+          "name": "status_code",
+          "status": "pass",
+          "value": 200,
+          "score": 100
+        },
+        {
+          "name": "canonical",
+          "status": "pass",
+          "value": "https://seoscoreapi.com",
+          "score": 100
+        },
+        {
+          "name": "viewport",
+          "status": "pass",
+          "value": "width=device-width, initial-scale=1.0",
+          "score": 100
+        },
+        {
+          "name": "robots_meta",
+          "status": "pass",
+          "value": "index, follow",
+          "score": 100
+        },
+        {
+          "name": "structured_data",
+          "status": "pass",
+          "value": {
+            "json_ld": 8,
+            "microdata": 0
+          },
+          "score": 100
+        },
+        {
+          "name": "schema_json_valid",
+          "status": "pass",
+          "value": 8,
+          "score": 100
+        },
+        {
+          "name": "schema_context",
+          "status": "pass",
+          "value": 8,
+          "score": 100
+        },
+        {
+          "name": "schema_type_known",
+          "status": "pass",
+          "value": 60,
+          "score": 100
+        },
+        {
+          "name": "schema_required_fields",
+          "status": "fail",
+          "value": [
+            "Organization 'SEO Score API': missing url"
+          ],
+          "score": 20,
+          "recommendation": "Schema items are missing fields required for Google rich results. These items are ineligible for rich results until fixed."
+        },
+        {
+          "name": "schema_recommended_fields",
+          "status": "warning",
+          "value": [
+            "SoftwareApplication 'SEO Score API': missing aggregateRating, review",
+            "Organization '45Squared': missing contactPoint",
+            "Organization '45Squared': missing logo, sameAs, contactPoint",
+            "Organization 'SEO Score API': missing contactPoint",
+            "Offer 'Free': missing availability, url, priceValidUntil",
+            "Offer 'Starter': missing availability, url, priceValidUntil",
+            "Offer 'Basic': missing availability, url, priceValidUntil",
+            "Offer 'Pro': missing availability, url, priceValidUntil",
+            "Offer 'Ultra': missing availability, url, priceValidUntil",
+            "Organization 'SEO Score API': missing contactPoint",
+            "Organization '45Squared': missing logo, sameAs, contactPoint",
+            "Organization '45Squared': missing logo, sameAs, contactPoint",
+            "Product 'SEO Score API': missing sku, gtin, mpn, aggregateRating, review",
+            "Organization 'SEO Score API': missing logo, sameAs, contactPoint",
+            "Organization '45Squared': missing logo, sameAs, contactPoint",
+            "Offer: missing availability, url, priceValidUntil"
+          ],
+          "score": 70,
+          "recommendation": "Schema items are missing recommended fields. These appear as 'Improve item appearance' warnings in Google Search Console. Note: aggregateRating/review on Product/SoftwareApplication must come from real third-party customers \u2014 Google prohibits self-serving reviews."
+        },
+        {
+          "name": "schema_format",
+          "status": "pass",
+          "value": "all fields well-formed",
+          "score": 100
+        },
+        {
+          "name": "schema_policy",
+          "status": "warning",
+          "value": [
+            "FAQ Question 'How is SEO Score API different from Google PageSpe' not visible on page (Google requires FAQ content visible to users)",
+            "FAQ Question 'What is the AI readability score?' not visible on page (Google requires FAQ content visible to users)",
+            "FAQ Question 'What is the difference between SEO, SXO, AEO, and ' not visible on page (Google requires FAQ content visible to users)",
+            "FAQ Question 'Is SEO Score API a free SEO API I can use without ' not visible on page (Google requires FAQ content visible to users)",
+            "Multiple Organization blocks with same name: 45Squared, SEO Score API. Consolidate into one."
+          ],
+          "score": 50,
+          "recommendation": "Schema has policy or coherence issues. FAQ/HowTo content must be visible on the page; reviews must come from real third-party customers (not the brand itself); avoid duplicate Organization blocks."
+        },
+        {
+          "name": "robots_txt",
+          "status": "pass",
+          "value": true,
+          "score": 100
+        },
+        {
+          "name": "sitemap",
+          "status": "pass",
+          "value": true,
+          "score": 100
+        },
+        {
+          "name": "preferred_source",
+          "status": "pass",
+          "value": true,
+          "score": 100
+        }
+      ]
+    },
+    "social": {
+      "score": 100.0,
+      "checks": [
+        {
+          "name": "open_graph",
+          "status": "pass",
+          "value": {
+            "og:title": "SEO Score API \u2014 Free SEO Audit API, 80+ Checks per URL, JSON in Seconds",
+            "og:description": "A free SEO audit API for developers. One call, 80+ checks per URL, JSON back in seconds. SDKs for Python, Node, n8n, and GitHub Actions.",
+            "og:image": "https://seoscoreapi.com/og-image.png",
+            "og:type": "website",
+            "og:url": "https://seoscoreapi.com"
+          },
+          "score": 100
+        },
+        {
+          "name": "twitter_card",
+          "status": "pass",
+          "value": "summary_large_image",
+          "score": 100
+        },
+        {
+          "name": "favicon",
+          "status": "pass",
+          "value": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>\ud83d\udd0d</text></svg>",
+          "score": 100
+        }
+      ]
+    },
+    "performance": {
+      "score": 90.0,
+      "checks": [
+        {
+          "name": "html_size",
+          "status": "warning",
+          "value": "101.7 KB",
+          "score": 60,
+          "recommendation": "HTML is getting large. Consider reducing inline resources."
+        },
+        {
+          "name": "dom_size",
+          "status": "pass",
+          "value": 701,
+          "score": 100
+        },
+        {
+          "name": "compression",
+          "status": "pass",
+          "value": "gzip",
+          "score": 100
+        },
+        {
+          "name": "render_blocking",
+          "status": "info",
+          "value": {
+            "css": 0,
+            "sync_js": 0
+          },
+          "score": 100
+        }
+      ]
+    },
+    "accessibility": {
+      "score": 100.0,
+      "checks": [
+        {
+          "name": "lang",
+          "status": "pass",
+          "value": "en",
+          "score": 100
+        },
+        {
+          "name": "image_alt_coverage",
+          "status": "info",
+          "value": "100%",
+          "score": 100
+        },
+        {
+          "name": "landmarks",
+          "status": "info",
+          "value": {
+            "aria_roles": 3,
+            "nav": 3,
+            "main": 1
+          },
+          "score": 100
+        }
+      ]
+    }
+  },
+  "priorities": [
+    {
+      "severity": "high",
+      "category": "technical",
+      "issue": "Schema missing required fields",
+      "fix": "Add required schema.org properties to make items eligible for Google rich results",
+      "plain_english": "The page's machine-readable labels are missing required details, so it isn't eligible for rich results.",
+      "who_fixes_it": "developer"
+    },
+    {
+      "severity": "high",
+      "category": "technical",
+      "issue": "Schema policy violations",
+      "fix": "Make FAQ/HowTo content visible to users, remove self-serving reviews, consolidate duplicate Organization blocks",
+      "plain_english": "The page's machine-readable labels break Google's rules, which can cost the site its rich results.",
+      "who_fixes_it": "developer"
+    },
+    {
+      "severity": "low",
+      "category": "technical",
+      "issue": "Schema missing recommended fields",
+      "fix": "Add recommended schema.org properties to unlock additional rich-result enhancements",
+      "plain_english": "The page's machine-readable labels could include more detail to unlock extra search features.",
+      "who_fixes_it": "developer"
+    }
+  ],
+  "ai_readability": {
+    "url": "https://seoscoreapi.com",
+    "ai_readability_score": 95,
+    "ai_readability_grade": "A+",
+    "categories": {
+      "crawl_accessibility": {
+        "score": 25,
+        "max": 25,
+        "checks": [
+          {
+            "name": "ssr_content",
+            "status": "pass",
+            "score": 8,
+            "max": 8,
+            "detail": "Server-rendered content detected"
+          },
+          {
+            "name": "ai_bot_access",
+            "status": "pass",
+            "score": 5,
+            "max": 5,
+            "detail": "All major AI bots allowed"
+          },
+          {
+            "name": "llms_txt",
+            "status": "pass",
+            "score": 4,
+            "max": 4,
+            "detail": "llms.txt found"
+          },
+          {
+            "name": "https",
+            "status": "pass",
+            "score": 2,
+            "max": 2,
+            "detail": "HTTPS enabled"
+          },
+          {
+            "name": "response_time",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "0.22s"
+          },
+          {
+            "name": "canonical",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "https://seoscoreapi.com"
+          }
+        ]
+      },
+      "structural_markup": {
+        "score": 24,
+        "max": 25,
+        "checks": [
+          {
+            "name": "schema_jsonld",
+            "status": "pass",
+            "score": 8,
+            "max": 8,
+            "detail": "Types: SoftwareApplication, Organization, FAQPage, Product, WebSite"
+          },
+          {
+            "name": "semantic_html",
+            "status": "pass",
+            "score": 5,
+            "max": 5,
+            "detail": "46 semantic elements, 22 divs (68% ratio)"
+          },
+          {
+            "name": "heading_hierarchy",
+            "status": "pass",
+            "score": 4,
+            "max": 4,
+            "detail": "Well-structured heading hierarchy"
+          },
+          {
+            "name": "lists_tables",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "21 list/table elements"
+          },
+          {
+            "name": "image_alt",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "100% of images have alt text"
+          },
+          {
+            "name": "meta_description",
+            "status": "warning",
+            "score": 1,
+            "max": 2,
+            "detail": "179 chars"
+          }
+        ]
+      },
+      "content_extractability": {
+        "score": 26,
+        "max": 30,
+        "checks": [
+          {
+            "name": "answer_first",
+            "status": "pass",
+            "score": 6,
+            "max": 6,
+            "detail": "6/6 sections lead with facts"
+          },
+          {
+            "name": "chunk_friendly",
+            "status": "warning",
+            "score": 3,
+            "max": 6,
+            "detail": "3/6 \u2014 sections sized for RAG chunking"
+          },
+          {
+            "name": "fact_density",
+            "status": "pass",
+            "score": 5,
+            "max": 5,
+            "detail": "24.5 facts per 100 words"
+          },
+          {
+            "name": "reading_ease",
+            "status": "pass",
+            "score": 3,
+            "max": 4,
+            "detail": "Flesch score: 58"
+          },
+          {
+            "name": "content_ratio",
+            "status": "pass",
+            "score": 4,
+            "max": 4,
+            "detail": "91% content-to-boilerplate ratio"
+          },
+          {
+            "name": "freshness",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "JSON-LD dateModified, article:modified_time, Last-Modified header"
+          },
+          {
+            "name": "source_citations",
+            "status": "pass",
+            "score": 2,
+            "max": 2,
+            "detail": "2 outbound links in content"
+          }
+        ]
+      },
+      "ai_discoverability": {
+        "score": 20,
+        "max": 20,
+        "checks": [
+          {
+            "name": "open_graph",
+            "status": "pass",
+            "score": 4,
+            "max": 4,
+            "detail": "5/5 OG tags present"
+          },
+          {
+            "name": "semantic_urls",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "/"
+          },
+          {
+            "name": "in_sitemap",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "Page found in sitemap.xml"
+          },
+          {
+            "name": "internal_links",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "98 internal links"
+          },
+          {
+            "name": "date_modified",
+            "status": "pass",
+            "score": 3,
+            "max": 3,
+            "detail": "JSON-LD dateModified, article:modified_time, Last-Modified header"
+          },
+          {
+            "name": "author_eeat",
+            "status": "pass",
+            "score": 2,
+            "max": 2,
+            "detail": "JSON-LD, meta tag"
+          },
+          {
+            "name": "multi_format",
+            "status": "pass",
+            "score": 2,
+            "max": 2,
+            "detail": "2 alternate format(s)"
+          }
+        ]
+      }
+    },
+    "recommendations": []
+  },
+  "core_web_vitals": {
+    "status": "unavailable",
+    "reason": "PSI returned HTTP 429",
+    "lcp_ms": null,
+    "inp_ms": null,
+    "cls": null,
+    "fcp_ms": null,
+    "ttfb_ms": null,
+    "checks": []
+  },
+  "sxo": {
+    "sxo_score": 78,
+    "sxo_grade": "B",
+    "checks": [
+      {
+        "name": "page_speed",
+        "status": "pass",
+        "score": 5,
+        "max": 5,
+        "detail": "0.19s \u2014 excellent"
+      },
+      {
+        "name": "mobile_viewport",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "Responsive viewport configured"
+      },
+      {
+        "name": "https_secure",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "Page served over HTTPS"
+      },
+      {
+        "name": "compression",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "Compression enabled (gzip)"
+      },
+      {
+        "name": "html_size",
+        "status": "warning",
+        "score": 2,
+        "max": 3,
+        "detail": "101KB \u2014 consider reducing"
+      },
+      {
+        "name": "dom_complexity",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "701 DOM elements \u2014 lightweight"
+      },
+      {
+        "name": "navigation",
+        "status": "pass",
+        "score": 2,
+        "max": 2,
+        "detail": "Navigation element present"
+      },
+      {
+        "name": "render_blocking",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "No render-blocking scripts in <head>"
+      },
+      {
+        "name": "ctr_signals",
+        "status": "fail",
+        "score": 0,
+        "max": 4,
+        "detail": "title 71 chars (target 30-65); meta description 179 chars (target 120-165)"
+      },
+      {
+        "name": "breadcrumbs",
+        "status": "info",
+        "score": 0,
+        "max": 2,
+        "detail": "No breadcrumbs \u2014 useful for UX and site structure signals"
+      }
+    ],
+    "summary": "Good experience with a few improvements that could boost engagement."
+  },
+  "aeo": {
+    "aeo_score": 94,
+    "aeo_grade": "A+",
+    "checks": [
+      {
+        "name": "faq_howto_schema",
+        "status": "pass",
+        "score": 4,
+        "max": 5,
+        "detail": "FAQPage schema found"
+      },
+      {
+        "name": "question_headings",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "6 question-phrased headings \u2014 strong AEO signal"
+      },
+      {
+        "name": "answer_first",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "Opening paragraph contains a direct factual answer"
+      },
+      {
+        "name": "short_answer_format",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "21 concise paragraphs (20-60 words) \u2014 snippet-ready"
+      },
+      {
+        "name": "structured_lists",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "20 list(s), 156 items \u2014 well-structured for extraction"
+      },
+      {
+        "name": "data_tables",
+        "status": "pass",
+        "score": 2,
+        "max": 3,
+        "detail": "1 semantic table \u2014 consider adding more for rich data presentation"
+      },
+      {
+        "name": "rich_schema",
+        "status": "pass",
+        "score": 5,
+        "max": 5,
+        "detail": "Rich schema types: Product, ItemList"
+      },
+      {
+        "name": "definition_patterns",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "11 definition-style sentences \u2014 strong for definition snippets"
+      }
+    ],
+    "summary": "Highly optimised for answer engines \u2014 strong schema, Q&A structure, and snippet-ready content."
+  },
+  "aio": {
+    "aio_score": 85,
+    "aio_grade": "A",
+    "checks": [
+      {
+        "name": "ai_bot_access",
+        "status": "pass",
+        "score": 5,
+        "max": 5,
+        "detail": "All AI crawlers allowed: GPTBot, ClaudeBot, PerplexityBot"
+      },
+      {
+        "name": "llms_txt",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "/llms.txt found \u2014 clear instructions for LLM crawlers"
+      },
+      {
+        "name": "ssr_content",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "2925 words in HTML \u2014 content is server-rendered"
+      },
+      {
+        "name": "fact_density",
+        "status": "pass",
+        "score": 3,
+        "max": 5,
+        "detail": "6.6 fact signals per 100 words \u2014 moderate density"
+      },
+      {
+        "name": "reading_ease",
+        "status": "warning",
+        "score": 2,
+        "max": 4,
+        "detail": "Flesch score 59 \u2014 moderately complex; simplify where possible"
+      },
+      {
+        "name": "chunk_friendly",
+        "status": "warning",
+        "score": 2,
+        "max": 4,
+        "detail": "8/16 sections within optimal range \u2014 break up long sections"
+      },
+      {
+        "name": "author_eeat",
+        "status": "pass",
+        "score": 4,
+        "max": 4,
+        "detail": "Strong authorship signals: JSON-LD author, meta author"
+      },
+      {
+        "name": "freshness",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "Strong freshness signals: JSON-LD date, OG article date, recent year references (2026)"
+      },
+      {
+        "name": "semantic_html",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "Rich semantic HTML: article, section, main, aside, header"
+      },
+      {
+        "name": "entity_consistency",
+        "status": "pass",
+        "score": 3,
+        "max": 3,
+        "detail": "Brand/entity 'seoscoreapi' mentioned 45 times \u2014 consistent entity signals"
+      }
+    ],
+    "summary": "Excellent AI optimisation \u2014 content is structured, credible, and accessible to LLM systems."
+  },
+  "history": {
+    "first_audit": false,
+    "audits_recorded": 27,
+    "previous_audit_at": 1791297332.2136734,
+    "days_since_last": 1.14,
+    "delta": {
+      "score": -0.04,
+      "grade_change": null,
+      "categories": {
+        "meta": -0.12,
+        "technical": 0.0,
+        "social": 0.0,
+        "performance": 0.0,
+        "accessibility": 0.0
+      }
+    }
+  }
+}

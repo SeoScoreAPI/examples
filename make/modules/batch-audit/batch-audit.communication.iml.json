@@ -1,0 +1,11 @@
+{
+    "url": "/audit/batch",
+    "method": "POST",
+    "type": "json",
+    "body": {
+        "urls": "{{parameters.urls}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

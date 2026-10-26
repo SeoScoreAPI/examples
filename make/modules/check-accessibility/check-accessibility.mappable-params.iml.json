@@ -1,0 +1,9 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL",
+        "required": true,
+        "help": "The page to check, for example `https://example.com`. `https://` is added when no scheme is given."
+    }
+]

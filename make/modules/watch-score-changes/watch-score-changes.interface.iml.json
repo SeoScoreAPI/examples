@@ -1,0 +1,47 @@
+[
+    {
+        "name": "event",
+        "type": "text",
+        "label": "Event"
+    },
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL"
+    },
+    {
+        "name": "old_score",
+        "type": "number",
+        "label": "Old Score"
+    },
+    {
+        "name": "new_score",
+        "type": "number",
+        "label": "New Score"
+    },
+    {
+        "name": "old_grade",
+        "type": "text",
+        "label": "Old Grade"
+    },
+    {
+        "name": "new_grade",
+        "type": "text",
+        "label": "New Grade"
+    },
+    {
+        "name": "change",
+        "type": "number",
+        "label": "Change (points)"
+    },
+    {
+        "name": "direction",
+        "type": "text",
+        "label": "Direction"
+    },
+    {
+        "name": "report_url",
+        "type": "url",
+        "label": "Report URL"
+    }
+]

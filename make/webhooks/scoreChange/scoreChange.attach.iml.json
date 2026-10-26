@@ -1,0 +1,31 @@
+{
+    "url": "https://seoscoreapi.com/monitors",
+    "method": "POST",
+    "type": "json",
+    "headers": {
+        "X-API-Key": "{{connection.apiKey}}",
+        "User-Agent": "seoscoreapi-make/1.0.0"
+    },
+    "body": {
+        "url": "{{parameters.url}}",
+        "frequency": "{{parameters.frequency}}",
+        "webhook_url": "{{webhook.url}}",
+        "alert_threshold": "{{parameters.alert_threshold}}"
+    },
+    "response": {
+        "data": {
+            "monitorUrl": "{{body.url}}"
+        },
+        "error": {
+            "message": "[{{statusCode}}] {{ifempty(body.detail, ifempty(body.error, 'Request failed'))}}",
+            "401": {
+                "message": "Your SEO Score API key was not accepted. Check it on your dashboard at https://seoscoreapi.com/dashboard."
+            }
+        }
+    },
+    "log": {
+        "sanitize": [
+            "request.headers.x-api-key"
+        ]
+    }
+}

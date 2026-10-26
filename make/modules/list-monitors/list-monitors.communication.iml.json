@@ -1,0 +1,9 @@
+{
+    "url": "/monitors",
+    "method": "GET",
+    "response": {
+        "iterate": "{{body.monitors}}",
+        "output": "{{item}}",
+        "limit": "{{parameters.limit}}"
+    }
+}

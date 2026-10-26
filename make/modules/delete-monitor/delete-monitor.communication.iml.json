@@ -1,0 +1,11 @@
+{
+    "url": "/monitors",
+    "method": "DELETE",
+    "type": "json",
+    "body": {
+        "url": "{{parameters.url}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

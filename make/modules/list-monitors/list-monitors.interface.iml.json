@@ -1,0 +1,37 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL"
+    },
+    {
+        "name": "frequency",
+        "type": "text",
+        "label": "Frequency"
+    },
+    {
+        "name": "last_score",
+        "type": "number",
+        "label": "Last Score"
+    },
+    {
+        "name": "last_grade",
+        "type": "text",
+        "label": "Last Grade"
+    },
+    {
+        "name": "last_checked",
+        "type": "any",
+        "label": "Last Checked"
+    },
+    {
+        "name": "webhook_url",
+        "type": "url",
+        "label": "Webhook URL"
+    },
+    {
+        "name": "alert_threshold",
+        "type": "integer",
+        "label": "Alert Threshold"
+    }
+]

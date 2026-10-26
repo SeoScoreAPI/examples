@@ -1,0 +1,17 @@
+{
+    "url": "https://seoscoreapi.com/monitors",
+    "method": "DELETE",
+    "type": "json",
+    "headers": {
+        "X-API-Key": "{{connection.apiKey}}",
+        "User-Agent": "seoscoreapi-make/1.0.0"
+    },
+    "body": {
+        "url": "{{webhook.monitorUrl}}"
+    },
+    "log": {
+        "sanitize": [
+            "request.headers.x-api-key"
+        ]
+    }
+}

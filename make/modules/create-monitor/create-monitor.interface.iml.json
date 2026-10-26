@@ -1,0 +1,27 @@
+[
+    {
+        "name": "status",
+        "type": "text",
+        "label": "Status"
+    },
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL"
+    },
+    {
+        "name": "frequency",
+        "type": "text",
+        "label": "Frequency"
+    },
+    {
+        "name": "webhook_url",
+        "type": "url",
+        "label": "Webhook URL"
+    },
+    {
+        "name": "alert_threshold",
+        "type": "integer",
+        "label": "Alert Threshold"
+    }
+]

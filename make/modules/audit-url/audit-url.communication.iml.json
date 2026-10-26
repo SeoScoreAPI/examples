@@ -1,0 +1,12 @@
+{
+    "url": "/audit",
+    "method": "GET",
+    "qs": {
+        "url": "{{parameters.url}}",
+        "cwv": "{{if(parameters.cwv, 'true', undefined)}}",
+        "include": "{{if(length(parameters.include) > 0, join(parameters.include, ','), undefined)}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

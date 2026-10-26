@@ -1,0 +1,2454 @@
+{
+  "item": [
+    {
+      "name": "Audit",
+      "description": "Score one page or several: 80+ checks, a 0 to 100 score, a grade and a prioritized fix list.",
+      "item": [
+        {
+          "id": "65cbf969-7b67-4bf2-9ca3-a83534a950ba",
+          "name": "SEO audit of one URL",
+          "request": {
+            "name": "SEO audit of one URL",
+            "description": {
+              "content": "Run a comprehensive SEO audit on any URL.\n\nReturns an overall score (0–100), letter grade, prioritized fix\nrecommendations, and a `audit` block of category breakdowns\n(SEO, performance, accessibility, AI readability).\n\nPaid plans (Starter $5/mo and up) additionally receive:\n  - `sxo`, `aeo`, `aio` — extended scoring blocks\n  - `history` — delta vs the previous audit for this URL\n    (overall score, grade change, per-category deltas, days since)\n  - Full priorities list and uncapped per-category checks\n\nEvery priority carries `plain_english` (one jargon-free sentence) and\n`who_fixes_it` (`developer` | `content` | `marketing`) next to `issue`/`fix`.\n\n`?include=trackers` (paid plans) adds a `trackers` block: the same inventory as\n`GET /trackers`, at no extra audit. It adds a few seconds.\n\n`?include=conversion` (paid plans) adds a `conversion` block: the same score and\nfix list as `GET /conversion`, at no extra audit. Combine them: `?include=trackers,conversion`.\n\nFree / demo keys see gated placeholders for the paid blocks\n(`_extended_gated`, `history._gated`, `_priorities_gated`).\n\n**Core Web Vitals are opt-in: `?cwv=true`** (every plan, no extra charge, never\npart of the score). The response always carries a `core_web_vitals` object with\n`lcp_ms`, `inp_ms`, `cls`, `fcp_ms`, `ttfb_ms`, `checks` and a `status`:\n\n  - `not_requested` (the default): no measurement was made; the metrics are\n    `null` and `hint` says how to ask. A default audit never waits on PageSpeed.\n  - `ok`: measured by Google PageSpeed Insights. `source` is `field` (real-user\n    Chrome UX Report data) or `lab`; `_cached: true` when it came from the\n    24 hour cache. A cached measurement is included even without `cwv=true`,\n    because it costs no time.\n  - `unavailable`: `cwv=true` was set but PageSpeed failed, rate limited us or\n    was too slow; `reason` says which. The audit itself still succeeds.\n  - `unavailable` with `pending: true`: PageSpeed was still measuring when the\n    wait ran out (about 25 seconds). The measurement finishes in the\n    background; the next audit of that URL has it.\n\nWith `cwv=true` the first audit of a URL takes about 10 seconds longer; repeats\nwithin 24 hours are instant. Set your client timeout to 60 seconds.\n\nRequires an API key passed in the `X-API-Key` header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The URL to audit (e.g., https://example.com)",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Comma-separated extras on paid plans: `trackers` (tracker and pixel inventory) and `conversion` (conversion score). Each adds a few seconds.",
+                    "type": "text/plain"
+                  },
+                  "key": "include",
+                  "value": "trackers"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Set `cwv=true` to include measured Core Web Vitals (LCP, INP, CLS, FCP, TTFB from Google PageSpeed Insights) in `core_web_vitals`. Off by default because the first measurement of a URL adds about 10 seconds (up to 25); it is then cached for 24 hours. Available on every plan, costs nothing extra and never changes the score.",
+                    "type": "text/plain"
+                  },
+                  "key": "cwv",
+                  "value": "false"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [
+            {
+              "id": "099f395a-8ba2-422f-a959-1996c317cf89",
+              "name": "The audit. The example is a real audit of https://seoscoreapi.com with each `checks` list cut to two entries.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The URL to audit (e.g., https://example.com)",
+                        "type": "text/plain"
+                      },
+                      "key": "url",
+                      "value": "https://seoscoreapi.com"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Comma-separated extras on paid plans: `trackers` (tracker and pixel inventory) and `conversion` (conversion score). Each adds a few seconds.",
+                        "type": "text/plain"
+                      },
+                      "key": "include",
+                      "value": "trackers"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Set `cwv=true` to include measured Core Web Vitals (LCP, INP, CLS, FCP, TTFB from Google PageSpeed Insights) in `core_web_vitals`. Off by default because the first measurement of a URL adds about 10 seconds (up to 25); it is then cached for 24 hours. Available on every plan, costs nothing extra and never changes the score.",
+                        "type": "text/plain"
+                      },
+                      "key": "cwv",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://seoscoreapi.com\",\n  \"score\": 91.546,\n  \"grade\": \"A+\",\n  \"response_code\": 200,\n  \"response_time\": \"0.22s\",\n  \"html_truncated\": false,\n  \"audit\": {\n    \"meta\": {\n      \"score\": 87.75,\n      \"checks\": [\n        {\n          \"name\": \"title\",\n          \"status\": \"warning\",\n          \"value\": \"SEO Score API — Free SEO Audit API, 80+ Checks per URL, JSON in Seconds\",\n          \"score\": 60,\n          \"recommendation\": \"Title may be truncated (71 chars). Keep under 60.\"\n        },\n        {\n          \"name\": \"meta_description\",\n          \"status\": \"warning\",\n          \"value\": \"Free SEO Score API: 80+ checks per URL (50+ scored on the free tier), scored JSON in seconds — on-page, speed, accessibility & AI readability. No credit card, start auditing free.\",\n          \"score\": 60,\n          \"recommendation\": \"Description may be truncated (179 chars). Keep under 160.\"\n        }\n      ]\n    },\n    \"technical\": {\n      \"score\": 91.111,\n      \"checks\": [\n        {\n          \"name\": \"response_time\",\n          \"status\": \"pass\",\n          \"value\": \"0.22s\",\n          \"score\": 100\n        },\n        {\n          \"name\": \"https\",\n          \"status\": \"pass\",\n          \"value\": true,\n          \"score\": 100\n        }\n      ]\n    },\n    \"social\": {\n      \"score\": 100,\n      \"checks\": [\n        {\n          \"name\": \"open_graph\",\n          \"status\": \"pass\",\n          \"value\": {\n            \"og:title\": \"SEO Score API — Free SEO Audit API, 80+ Checks per URL, JSON in Seconds\",\n            \"og:description\": \"A free SEO audit API for developers. One call, 80+ checks per URL, JSON back in seconds. SDKs for Python, Node, n8n, and GitHub Actions.\",\n            \"og:image\": \"https://seoscoreapi.com/og-image.png\",\n            \"og:type\": \"website\",\n            \"og:url\": \"https://seoscoreapi.com\"\n          },\n          \"score\": 100\n        },\n        {\n          \"name\": \"twitter_card\",\n          \"status\": \"pass\",\n          \"value\": \"summary_large_image\",\n          \"score\": 100\n        }\n      ]\n    },\n    \"performance\": {\n      \"score\": 90,\n      \"checks\": [\n        {\n          \"name\": \"html_size\",\n          \"status\": \"warning\",\n          \"value\": \"101.7 KB\",\n          \"score\": 60,\n          \"recommendation\": \"HTML is getting large. Consider reducing inline resources.\"\n        },\n        {\n          \"name\": \"dom_size\",\n          \"status\": \"pass\",\n          \"value\": 701,\n          \"score\": 100\n        }\n      ]\n    },\n    \"accessibility\": {\n      \"score\": 100,\n      \"checks\": [\n        {\n          \"name\": \"lang\",\n          \"status\": \"pass\",\n          \"value\": \"en\",\n          \"score\": 100\n        },\n        {\n          \"name\": \"image_alt_coverage\",\n          \"status\": \"info\",\n          \"value\": \"100%\",\n          \"score\": 100\n        }\n      ]\n    }\n  },\n  \"priorities\": [\n    {\n      \"severity\": \"high\",\n      \"category\": \"technical\",\n      \"issue\": \"Schema missing required fields\",\n      \"fix\": \"Add required schema.org properties to make items eligible for Google rich results\",\n      \"plain_english\": \"The page's machine-readable labels are missing required details, so it isn't eligible for rich results.\",\n      \"who_fixes_it\": \"developer\"\n    },\n    {\n      \"severity\": \"high\",\n      \"category\": \"technical\",\n      \"issue\": \"Schema policy violations\",\n      \"fix\": \"Make FAQ/HowTo content visible to users, remove self-serving reviews, consolidate duplicate Organization blocks\",\n      \"plain_english\": \"The page's machine-readable labels break Google's rules, which can cost the site its rich results.\",\n      \"who_fixes_it\": \"developer\"\n    },\n    {\n      \"severity\": \"low\",\n      \"category\": \"technical\",\n      \"issue\": \"Schema missing recommended fields\",\n      \"fix\": \"Add recommended schema.org properties to unlock additional rich-result enhancements\",\n      \"plain_english\": \"The page's machine-readable labels could include more detail to unlock extra search features.\",\n      \"who_fixes_it\": \"developer\"\n    }\n  ],\n  \"ai_readability\": {\n    \"url\": \"https://seoscoreapi.com\",\n    \"ai_readability_score\": 95,\n    \"ai_readability_grade\": \"A+\",\n    \"categories\": {\n      \"crawl_accessibility\": {\n        \"score\": 25,\n        \"max\": 25,\n        \"checks\": [\n          {\n            \"name\": \"ssr_content\",\n            \"status\": \"pass\",\n            \"score\": 8,\n            \"max\": 8,\n            \"detail\": \"Server-rendered content detected\"\n          },\n          {\n            \"name\": \"ai_bot_access\",\n            \"status\": \"pass\",\n            \"score\": 5,\n            \"max\": 5,\n            \"detail\": \"All major AI bots allowed\"\n          }\n        ]\n      },\n      \"structural_markup\": {\n        \"score\": 24,\n        \"max\": 25,\n        \"checks\": [\n          {\n            \"name\": \"schema_jsonld\",\n            \"status\": \"pass\",\n            \"score\": 8,\n            \"max\": 8,\n            \"detail\": \"Types: SoftwareApplication, Organization, FAQPage, Product, WebSite\"\n          },\n          {\n            \"name\": \"semantic_html\",\n            \"status\": \"pass\",\n            \"score\": 5,\n            \"max\": 5,\n            \"detail\": \"46 semantic elements, 22 divs (68% ratio)\"\n          }\n        ]\n      },\n      \"content_extractability\": {\n        \"score\": 26,\n        \"max\": 30,\n        \"checks\": [\n          {\n            \"name\": \"answer_first\",\n            \"status\": \"pass\",\n            \"score\": 6,\n            \"max\": 6,\n            \"detail\": \"6/6 sections lead with facts\"\n          },\n          {\n            \"name\": \"chunk_friendly\",\n            \"status\": \"warning\",\n            \"score\": 3,\n            \"max\": 6,\n            \"detail\": \"3/6 — sections sized for RAG chunking\"\n          }\n        ]\n      },\n      \"ai_discoverability\": {\n        \"score\": 20,\n        \"max\": 20,\n        \"checks\": [\n          {\n            \"name\": \"open_graph\",\n            \"status\": \"pass\",\n            \"score\": 4,\n            \"max\": 4,\n            \"detail\": \"5/5 OG tags present\"\n          },\n          {\n            \"name\": \"semantic_urls\",\n            \"status\": \"pass\",\n            \"score\": 3,\n            \"max\": 3,\n            \"detail\": \"/\"\n          }\n        ]\n      }\n    },\n    \"recommendations\": []\n  },\n  \"core_web_vitals\": {\n    \"status\": \"unavailable\",\n    \"reason\": \"PSI returned HTTP 429\",\n    \"lcp_ms\": null,\n    \"inp_ms\": null,\n    \"cls\": null,\n    \"fcp_ms\": null,\n    \"ttfb_ms\": null,\n    \"checks\": []\n  },\n  \"sxo\": {\n    \"sxo_score\": 78,\n    \"sxo_grade\": \"B\",\n    \"checks\": [\n      {\n        \"name\": \"page_speed\",\n        \"status\": \"pass\",\n        \"score\": 5,\n        \"max\": 5,\n        \"detail\": \"0.19s — excellent\"\n      },\n      {\n        \"name\": \"mobile_viewport\",\n        \"status\": \"pass\",\n        \"score\": 4,\n        \"max\": 4,\n        \"detail\": \"Responsive viewport configured\"\n      }\n    ],\n    \"summary\": \"Good experience with a few improvements that could boost engagement.\"\n  },\n  \"aeo\": {\n    \"aeo_score\": 94,\n    \"aeo_grade\": \"A+\",\n    \"checks\": [\n      {\n        \"name\": \"faq_howto_schema\",\n        \"status\": \"pass\",\n        \"score\": 4,\n        \"max\": 5,\n        \"detail\": \"FAQPage schema found\"\n      },\n      {\n        \"name\": \"question_headings\",\n        \"status\": \"pass\",\n        \"score\": 4,\n        \"max\": 4,\n        \"detail\": \"6 question-phrased headings — strong AEO signal\"\n      }\n    ],\n    \"summary\": \"Highly optimised for answer engines — strong schema, Q&A structure, and snippet-ready content.\"\n  },\n  \"aio\": {\n    \"aio_score\": 85,\n    \"aio_grade\": \"A\",\n    \"checks\": [\n      {\n        \"name\": \"ai_bot_access\",\n        \"status\": \"pass\",\n        \"score\": 5,\n        \"max\": 5,\n        \"detail\": \"All AI crawlers allowed: GPTBot, ClaudeBot, PerplexityBot\"\n      },\n      {\n        \"name\": \"llms_txt\",\n        \"status\": \"pass\",\n        \"score\": 4,\n        \"max\": 4,\n        \"detail\": \"/llms.txt found — clear instructions for LLM crawlers\"\n      }\n    ],\n    \"summary\": \"Excellent AI optimisation — content is structured, credible, and accessible to LLM systems.\"\n  },\n  \"history\": {\n    \"first_audit\": false,\n    \"audits_recorded\": 27,\n    \"previous_audit_at\": 1791297332.2136734,\n    \"days_since_last\": 1.14,\n    \"delta\": {\n      \"score\": -0.04,\n      \"grade_change\": null,\n      \"categories\": {\n        \"meta\": -0.12,\n        \"technical\": 0,\n        \"social\": 0,\n        \"performance\": 0,\n        \"accessibility\": 0\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9409f016-c053-4acf-96a0-ce645909f672",
+          "name": "Audit report as PDF, Markdown or CSV",
+          "request": {
+            "name": "Audit report as PDF, Markdown or CSV",
+            "description": {
+              "content": "Run an audit and download it as a PDF, Markdown or CSV report.\n\nSame audit, same usage and same plan gating as `GET /audit` (it counts as one\naudit): the file contains exactly what your key's `/audit` JSON contains,\nincluding `plain_english` and `who_fixes_it` on every priority fix. Free keys get\nthe free slice with a note on what the full report adds.\n\n**White-label (Pro and Ultra):** `brand_name`, `brand_color` and `logo_url` put your\nagency's name, colour and logo on the report instead of ours. On other plans\nthose parameters return `403`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit",
+                "export"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The URL to audit (e.g., https://example.com)",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) pdf | md | csv",
+                    "type": "text/plain"
+                  },
+                  "key": "format",
+                  "value": "pdf"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "White-label: your agency name (Pro and Ultra)",
+                    "type": "text/plain"
+                  },
+                  "key": "brand_name",
+                  "value": "Your Agency"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "White-label: accent colour, #rrggbb (Pro and Ultra)",
+                    "type": "text/plain"
+                  },
+                  "key": "brand_color",
+                  "value": "#1a73e8"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "White-label: https URL of a PNG/JPEG/WebP logo, max 300 KB (Pro and Ultra)",
+                    "type": "text/plain"
+                  },
+                  "key": "logo_url",
+                  "value": "https://example.com/logo.png"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dda4540c-ae0c-4575-af75-9819d50d60b6",
+          "name": "Compare 2 to 5 URLs side by side",
+          "request": {
+            "name": "Compare 2 to 5 URLs side by side",
+            "description": {
+              "content": "Compare 2–5 URLs side by side with a structured diff.\n\nReturns each URL's score + category breakdown plus a `diff` object\nthat tells you who is ahead and by how much, per category, per URL\npair. Built for agencies who embed comparisons in sales decks and\nfor devs who want a one-call sanity check across an old vs. new\ndeploy.\n\nSend JSON: {\"urls\": [\"https://a.com\", \"https://b.com\", ...]}\nRequires Basic plan ($15/mo) or higher.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "compare"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"urls\": [\n    \"https://seoscoreapi.com\",\n    \"https://example.com\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "21ab93f3-ad36-4d9e-8170-6e991c321b35",
+          "name": "Audit up to 10 URLs in one request",
+          "request": {
+            "name": "Audit up to 10 URLs in one request",
+            "description": {
+              "content": "Audit multiple URLs in one request. Paid plans only (Starter $5/mo and up).\n\nEach URL is audited concurrently and counts against your monthly\naudit quota. Results include the same `history` delta block as\n`/audit` and the extended `sxo`/`aeo`/`aio` scores.\n\nSend JSON: {\"urls\": [\"https://a.com\", \"https://b.com\", ...]}\nMax 10 URLs per request. URLs that fail validation are returned\nwith an `error` field instead of a score.\n\nAdd `\"cwv\": true` to the body to include measured Core Web Vitals for every\nURL (see `GET /audit` for the `core_web_vitals` statuses). It is off by default:\neach result then says `status: \"not_requested\"`, or carries a measurement that\nwas already cached. With it on, the measurements run side by side while the\nURLs are audited, and the batch as a whole waits at most about 50 seconds on\nthem; a URL whose measurement is not ready reads `unavailable` + `pending: true`\nand has it on the next audit. Set your client timeout to 180 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"urls\": [\n    \"https://seoscoreapi.com\",\n    \"https://example.com\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83817d2d-54a4-4dcb-a146-13eb60fa147d",
+          "name": "Your page against a competitor's for one keyword",
+          "request": {
+            "name": "Your page against a competitor's for one keyword",
+            "description": {
+              "content": "Head-to-head SEO comparison with keyword-relevance scoring. Requires Pro plan ($39/mo) or higher.\n\nSend JSON: {\"url\": \"https://yoursite.com/page\", \"competitor_url\": \"https://competitor.com/page\", \"keyword\": \"target keyword\"}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit",
+                "competitive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://yoursite.com/page\",\n  \"competitor_url\": \"https://competitor.com/page\",\n  \"keyword\": \"target keyword\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Accessibility",
+      "description": "Automated WCAG 2.1 A/AA checks. Automated testing does not catch everything.",
+      "item": [
+        {
+          "id": "ace394eb-b274-47a4-9f80-1f63168d3bd6",
+          "name": "WCAG 2.1 A/AA accessibility audit",
+          "request": {
+            "name": "WCAG 2.1 A/AA accessibility audit",
+            "description": {
+              "content": "Run an ADA / WCAG 2.1 AA accessibility compliance audit. Paid plans only.\n\nReturns a detailed accessibility report including:\n- Overall compliance score and grade (WCAG 2.1 A/AA rules only)\n- Lawsuit risk assessment (high/medium/low/minimal)\n- Category breakdowns (images, forms, contrast, keyboard, ARIA, etc.)\n- `violations`: WCAG 2.1 AA failures, with affected elements and a plain-English fix\n- `best_practices`: axe best-practice findings (e.g. heading-order). Not WCAG\n  requirements, so they never lower the score or raise the risk level\n- `needs_review`: checks axe couldn't decide automatically, with what to verify by hand.\n  They are excluded from the score rather than counted as failures\n- `priorities`: WCAG violations first, then best practices. `severity` maps from axe\n  `impact` one-to-one: critical→critical, serious→high, moderate→medium, minor→low\n  (best practices are always low)\n\n**Limits.** ADA audits have their own monthly allowance (`ada_monthly`: Starter 5,\nBasic 20, Pro 100, Ultra 500), separate from your audit quota. Each key may run\n20 ADA audits per minute and 2 at a time; the tier `rpm` does not apply here.\n`GET /usage` reports `ada_usage_this_month` and `ada_remaining`.\nA 429 includes `Retry-After`, and a 429 is never counted against `ada_monthly`\n(nor is any failed audit).\n\n**Errors.** A page we can't load returns **422** with `detail` (message) and\n`reason`: `blocked` (the site refused our crawler), `timeout`, `dns`, `tls`,\n`unreachable`, `not_found`, `http_error`, `non_html`, `redirect_loop`,\n`blocked_url`, `load_failed`. A URL we refuse up front (private/internal address,\nmalformed URL) is **400** with `reason` `blocked_url` / `invalid_url`. A **502**\nmeans the failure was on our side.\n\nUses the axe-core accessibility engine (industry standard) to check\nagainst WCAG 2.1 Level AA — the standard referenced in most ADA lawsuits.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit",
+                "accessibility"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The URL to audit for ADA/WCAG compliance",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "`trackers` adds the tracker and pixel inventory to the report",
+                    "type": "text/plain"
+                  },
+                  "key": "include",
+                  "value": "trackers"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI readiness",
+      "description": "How well AI systems and answer engines can read, cite and reuse a page.",
+      "item": [
+        {
+          "id": "1adb4c73-ad67-446e-8c98-faec7502dc77",
+          "name": "AI readability score of one URL",
+          "request": {
+            "name": "AI readability score of one URL",
+            "description": {
+              "content": "Score how well a page can be consumed by AI/LLM systems. Requires an API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ai-readability"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The URL to analyze for AI readability",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [
+            {
+              "id": "3a950dd4-7477-4e8f-b127-8dc6250ea0f8",
+              "name": "The AI readability result. The example is a real result for https://seoscoreapi.com with each `checks` list cut to two entries.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ai-readability"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The URL to analyze for AI readability",
+                        "type": "text/plain"
+                      },
+                      "key": "url",
+                      "value": "https://seoscoreapi.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://seoscoreapi.com\",\n  \"ai_readability_score\": 95,\n  \"ai_readability_grade\": \"A+\",\n  \"categories\": {\n    \"crawl_accessibility\": {\n      \"score\": 25,\n      \"max\": 25,\n      \"checks\": [\n        {\n          \"name\": \"ssr_content\",\n          \"status\": \"pass\",\n          \"score\": 8,\n          \"max\": 8,\n          \"detail\": \"Server-rendered content detected\"\n        },\n        {\n          \"name\": \"ai_bot_access\",\n          \"status\": \"pass\",\n          \"score\": 5,\n          \"max\": 5,\n          \"detail\": \"All major AI bots allowed\"\n        }\n      ]\n    },\n    \"structural_markup\": {\n      \"score\": 24,\n      \"max\": 25,\n      \"checks\": [\n        {\n          \"name\": \"schema_jsonld\",\n          \"status\": \"pass\",\n          \"score\": 8,\n          \"max\": 8,\n          \"detail\": \"Types: SoftwareApplication, Organization, FAQPage, Product, WebSite\"\n        },\n        {\n          \"name\": \"semantic_html\",\n          \"status\": \"pass\",\n          \"score\": 5,\n          \"max\": 5,\n          \"detail\": \"46 semantic elements, 22 divs (68% ratio)\"\n        }\n      ]\n    },\n    \"content_extractability\": {\n      \"score\": 26,\n      \"max\": 30,\n      \"checks\": [\n        {\n          \"name\": \"answer_first\",\n          \"status\": \"pass\",\n          \"score\": 6,\n          \"max\": 6,\n          \"detail\": \"6/6 sections lead with facts\"\n        },\n        {\n          \"name\": \"chunk_friendly\",\n          \"status\": \"warning\",\n          \"score\": 3,\n          \"max\": 6,\n          \"detail\": \"3/6 — sections sized for RAG chunking\"\n        }\n      ]\n    },\n    \"ai_discoverability\": {\n      \"score\": 20,\n      \"max\": 20,\n      \"checks\": [\n        {\n          \"name\": \"open_graph\",\n          \"status\": \"pass\",\n          \"score\": 4,\n          \"max\": 4,\n          \"detail\": \"5/5 OG tags present\"\n        },\n        {\n          \"name\": \"semantic_urls\",\n          \"status\": \"pass\",\n          \"score\": 3,\n          \"max\": 3,\n          \"detail\": \"/\"\n        }\n      ]\n    }\n  },\n  \"recommendations\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "964ee822-65b5-4ed2-bf9c-c80c93600200",
+          "name": "Generate an llms.txt for a domain",
+          "request": {
+            "name": "Generate an llms.txt for a domain",
+            "description": {
+              "content": "Generate an llms.txt file for any domain.\n\nFree / no-key: basic version. Basic plan ($15/mo) and higher: curated version\nwith per-page descriptions pulled from each page's meta. Returns plain text\nsuitable for saving directly to /llms.txt on the user's site.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "llms-generator"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) Domain to generate llms.txt for (e.g. example.com)",
+                    "type": "text/plain"
+                  },
+                  "key": "domain",
+                  "value": "seoscoreapi.com"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "085ddf94-f00e-4668-a0df-e707161af4ba",
+          "name": "Generative engine optimization (GEO) audit",
+          "request": {
+            "name": "Generative engine optimization (GEO) audit",
+            "description": {
+              "content": "Run a GEO (Generative Engine Optimization) audit — 26 checks measuring how visible your page is to LLMs. Requires Basic plan ($15/mo) or higher.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "geo",
+                "audit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The URL to audit for GEO optimization",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e676c290-5220-4da0-893d-6964bd66d6bd",
+          "name": "Ask AI models about your brand",
+          "request": {
+            "name": "Ask AI models about your brand",
+            "description": {
+              "content": "Probe LLMs to measure how often your brand is mentioned in AI responses. Requires Basic plan ($15/mo) or higher.\n\nSend JSON: {\"brand\": \"MyBrand\", \"domain\": \"mybrand.com\", \"prompts\": [\"What are the best X?\"], \"models\": [\"claude\", \"nova\"], \"runs_per_prompt\": 3}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "geo",
+                "brand-probe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"MyBrand\",\n  \"domain\": \"mybrand.com\",\n  \"prompts\": [\n    \"What are the best X?\"\n  ],\n  \"models\": [\n    \"claude\",\n    \"nova\"\n  ],\n  \"runs_per_prompt\": 3\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Page analysis",
+      "description": "Trackers, conversion, Search Console quick wins and backlinks.",
+      "item": [
+        {
+          "id": "9595d5c4-ac75-40d4-884b-d16d340529d9",
+          "name": "Tracking pixels and tags on a page",
+          "request": {
+            "name": "Tracking pixels and tags on a page",
+            "description": {
+              "content": "List the third-party trackers and pixels a page loads.\n\nLoads the page in a real browser, waits a few seconds, and reports every analytics,\nadvertising, session-replay, chat, marketing-automation, A/B-testing and monitoring\ntool it saw, including pixels a tag manager injects (which never appear in the page\nsource).\n\nEach item in `trackers` has `vendor`, `category`, `found_in` (`html`, `network`),\n`injected` (seen on the network but not in the source), `requests`,\n`transfer_bytes`, `evidence` (up to 3 URLs) and, where one is exposed, `ids`\n(a GA4, GTM or Google Ads id). `summary` totals them by category and names the\n`consent_manager` on the page, if any.\n\nThis lists what loaded during one visit with no interaction. It does not determine\nwhether a tracker waited for consent, and it is not legal advice.\n\nCounts as one audit against your plan. A page we can't load returns **422** with\n`reason`, and is not counted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "trackers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The page to inspect (e.g., https://example.com)",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bc72b967-60e0-4c71-9bec-4b18baca77da",
+          "name": "Conversion score of a page",
+          "request": {
+            "name": "Conversion score of a page",
+            "description": {
+              "content": "Score how well a page turns a visitor into a lead or a sale.\n\nReads the page's HTML (the same fetch `/audit` uses: plain HTTP, then a real browser\nwhen the page is built by JavaScript) and scores five areas from 0 to 100:\n\n- `headline`: one H1 that says what the page offers, with a sentence under it\n- `cta`: a call to action near the top, worded as an action, repeated down the page.\n  A phone link and \"Add to cart\" both count\n- `trust`: testimonials, ratings, guarantees, contact details, credentials\n- `forms`: how many fields the form asks for, and whether they are labeled\n- `objections`: price or a path to it, FAQ, what happens next, shipping and returns\n\nReturns `score`, `grade`, `page_type`, `categories` (per-area score, weight and\nchecks), `signals` (what we found: the H1, the button labels, the trust evidence)\nand `priorities`, the fix list. Every priority has `severity`, `category`, `issue`,\n`fix`, `plain_english` and `who_fixes_it` (`developer` | `content` | `marketing`),\nplus `evidence` where there is some.\n\n**What it does not do.** It does not measure your conversion rate; only your\nanalytics can. \"Near the top\" is source order, not pixels: we do not lay the page\nout. A form embedded from another service (HubSpot, Calendly, Typeform) is reported\nbut not scored, and a page with no form is not marked down for it: `forms.score`\nis `null` and its weight goes to the other areas. A page over 3 MB is scored on what\nwe read, and nothing is reported as missing.\n\nCounts as one audit against your plan. A page we can't load or can't read returns\n**422** with `reason` and is not counted. Free keys get the scores and the first\ntwo priorities; paid plans get the full list. `?include=conversion` on `/audit`\n(paid plans) adds the same block to an audit at no extra charge.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversion"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The page to score (e.g., https://example.com/services)",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "`local_service`, `ecommerce`, `saas` or `general`. Detected from the page when omitted.",
+                    "type": "text/plain"
+                  },
+                  "key": "page_type",
+                  "value": "saas"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1f5010e4-eacc-4438-9b4e-48d998f07bbf",
+          "name": "Page-two quick wins from your Search Console rows",
+          "request": {
+            "name": "Page-two quick wins from your Search Console rows",
+            "description": {
+              "content": "Find the page-2 quick wins in your Search Console data.\n\nSend your own Search Console rows and get back the queries ranking 11-20 that are\nworth working on first, each with the page it lands on, an opportunity score and an\nestimate of the extra clicks from moving it onto page 1.\n\n**We do not connect to your Search Console.** You export the rows (Performance\nreport CSV, or the Search Analytics API with the `query` and `page` dimensions)\nand send them. Nothing is fetched and nothing is stored.\n\nSend JSON with either `rows` or `csv`:\n\n- `rows`: `[{\"query\": \"...\", \"page\": \"https://...\", \"clicks\": 3, \"impressions\": 900, \"position\": 11.4}]`.\n  The API's own shape (`{\"keys\": [\"query\", \"page\"], \"clicks\": ...}`) works too. `page` is optional.\n- `csv`: the export as text, with a header row. Column names are matched\n  (`Top queries`/`Query`, `Page`, `Clicks`, `Impressions`, `Position`).\n- `min_impressions` (default 50), `target_position` (1-10, default 5), `limit` (default 25, max 200)\n- `exclude_terms`: words to leave out, such as your brand name\n- `ctr_curve`: your own expected click-through rate by position, `{\"1\": 0.28, \"2\": 0.15}`\n\nEach item in `quick_wins` has `query`, `page`, `position`, `impressions`, `clicks`,\n`ctr`, `expected_ctr`, `opportunity_score` (0-100: 40% how close to page 1, 40%\nimpressions, 20% how far clicks fall short of expected), `estimated_extra_clicks`\nat the target position with a range (position 10 to position 3), an `action`\n(`small_push`, `improve_page`, `fix_snippet`, `consolidate`) and a `plain_english`\nsentence. `also_ranking_pages` lists other pages of yours showing for the same query.\n`pages` groups the wins by landing page.\n\n**Read the numbers as estimates.** Google publishes no click-through curve; the\ndefault is a rough one. Extra clicks hold impressions constant and assume every\nimpression is a person. Position is an average over the export's dates, countries\nand devices.\n\n**Send the whole export, not only page 2.** With 500 or more page-1 impressions in\nthe rows, `ctr_calibration` compares the clicks your page-1 results earned with\nwhat the curve predicts (`ratio`), and each win also gets\n`estimated_extra_clicks_calibrated` (the estimate times that ratio). A ratio far\nbelow 1 usually means many of the impressions are rank trackers or bots.\n\nWorks on every plan. Counts as one audit; a request we reject (400) is not counted.\nUp to 1 MB of JSON per request (roughly 5,000 rows with URLs); filter the export\nto positions 11-20 first if yours is larger.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "quick-wins"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rows\": [\n    {\n      \"query\": \"seo audit api\",\n      \"page\": \"https://example.com/\",\n      \"clicks\": 3,\n      \"impressions\": 900,\n      \"position\": 11.4\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8231c85a-4720-4215-90b6-c9c867cba0d4",
+          "name": "Backlinks to a domain",
+          "request": {
+            "name": "Backlinks to a domain",
+            "description": {
+              "content": "Return observed backlinks for a target domain.\n\nAudit-fed dataset: every audit run by SEO Score API customers contributes\nobservations. Not a comprehensive backlink index — see `data_caveat` in the\nresponse. Requires Basic plan ($15/mo) or higher.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "backlinks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) Target domain (e.g. example.com)",
+                    "type": "text/plain"
+                  },
+                  "key": "domain",
+                  "value": "seoscoreapi.com"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Max sample rows to return",
+                    "type": "text/plain"
+                  },
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Site crawl",
+      "description": "Crawl a site and score its pages (asynchronous).",
+      "item": [
+        {
+          "id": "d6c90ebb-5488-4c3a-9814-7967d7db852f",
+          "name": "Start a site crawl",
+          "request": {
+            "name": "Start a site crawl",
+            "description": {
+              "content": "Start a multi-page crawl of one site (async).\n\nFollows same-site links from `url`, plus the URLs in the sitemap, up to your page cap,\nand reports broken pages, redirects, duplicate titles and headings, pages missing a\ntitle or heading, orphan pages (in the sitemap, linked from nowhere crawled) and slow\npages. Plain HTTP requests, 4 at a time, robots.txt honoured.\n\n**Limits.** Pro: 25 pages per crawl, 20 crawls a month. Ultra: 100 pages, 100 crawls a\nmonth. Any other plan: one Deep Audit credit covers a 25-page crawl. A failed crawl is\nnot counted and a credit is returned.\n\nReturns `job_id`; poll `GET /crawl/{job_id}`. `site_map` is a shareable page with the\nsite diagram once the crawl has finished.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crawl"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://seoscoreapi.com\",\n  \"max_pages\": 10\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e5e14575-d53a-4452-8c7b-f45314aac1b0",
+          "name": "Get a site crawl",
+          "request": {
+            "name": "Get a site crawl",
+            "description": {
+              "content": "Poll a site crawl. `status` is `queued`, `running`, `completed` or `failed`.\n\nWhile running, `pages_done` counts up. When completed, `result` holds `summary`,\n`issues` (broken_links, redirects, duplicate_titles, duplicate_h1, missing_title,\nmissing_h1, orphan_pages, slow_pages, noindex_pages, rate_limited), `pages` (one row\nper URL: status, depth, redirects, response_ms, title, h1, canonical, inlinks) and\n`links` (the internal link graph). Only the key that started a crawl can read it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crawl",
+                ":job_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "JOB_ID_FROM_START",
+                  "key": "job_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Deep Site Audit",
+      "description": "Asynchronous audit from a catalog of 14,000+ checks.",
+      "item": [
+        {
+          "id": "65575005-1550-44c4-85ea-343f886ece5e",
+          "name": "Start a Deep Site Audit",
+          "request": {
+            "name": "Start a Deep Site Audit",
+            "description": {
+              "content": "Queue a Deep Site Audit of one URL and get a `job_id` back immediately.\n\nThe audit fetches the page and its supporting signals (robots.txt, sitemap,\nDNS, TLS, PageSpeed), runs the thousands of catalog checks that apply to it, then an AI analysis pass of up to 150 checks. It takes\nabout 90 seconds once it starts, so poll `GET /site-audit/{job_id}`.\n\n**Included on Pro (20/month) and Ultra (100/month).** Any other key spends one\npurchased Deep Audit credit per audit. A failed audit gives its quota unit or\ncredit back.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "site-audit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://seoscoreapi.com\",\n  \"business_type\": \"saas\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8488d84f-4db6-4df7-a168-546f0222e61c",
+          "name": "Deep Site Audit allowance for this key",
+          "request": {
+            "name": "Deep Site Audit allowance for this key",
+            "description": {
+              "content": "Deep Site Audits used and remaining this calendar month (UTC) for this key.\n\nSeparate from `GET /usage`, which reports the per-URL audit allowance. Keys\nwithout Pro/Ultra show `remaining: 0` here and run on credits instead; see\nyour dashboard for the credit balance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deep-audit",
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f6e92aa-4b25-44c2-8327-367860c6f34c",
+          "name": "Poll a Deep Site Audit",
+          "request": {
+            "name": "Poll a Deep Site Audit",
+            "description": {
+              "content": "Status of a Deep Site Audit: `queued` (with `queue_position` and\n`eta_seconds`), `running` (with `progress` 0-100 and `stage`), `completed`\n(with `result`) or `failed` (with `error`). Poll every 5-10 seconds. Only the\nkey that started a job can read it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "site-audit",
+                ":job_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "JOB_ID_FROM_START",
+                  "key": "job_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Citations",
+      "description": "Track whether AI assistants mention and cite your brand.",
+      "item": [
+        {
+          "id": "f07d3ed1-b7ee-488f-b43c-82fff8ea8358",
+          "name": "Create Citation Tracker",
+          "request": {
+            "name": "Create Citation Tracker",
+            "description": {
+              "content": "Track a brand's visibility in AI answers. Requires Starter ($5/mo) or higher.\n\nSend JSON: {\"brand\": \"Acme\", \"domains\": [\"acme.com\"], \"prompts\": [\"best CRM for agencies\"],\n\"competitors\": [\"Rival\"], \"engines\": [\"chatgpt\",\"gemini\",\"perplexity\",\"claude\"],\n\"samples\": 3, \"cadence\": \"weekly\", \"webhook_url\": \"https://...\"}\n\n**No prompts yet?** Leave `prompts` out and send `\"starter\": {\"topic\": \"CRM\",\n\"audience\": \"agencies\"}` instead. The tracker is created with a starter set built\nfrom `topic`, your `brand` and `competitors` (the same list\n`GET /citations/prompts/starter` returns), cut to the tracked prompts your plan has\nleft and to what one run can spend of your monthly checks at the tracker's engines\nand samples. With no `cadence`, a starter tracker runs weekly when the allowance\ncovers a month of weekly runs, otherwise monthly. The response's `starter` block\nsays how many were generated and kept, the checks per run and the cadence chosen.\nEdit them later with `PATCH`.\n\nMonthly allowance (checks / tracked prompts): Starter 150 / 15, Basic 500 / 30,\nPro 1,500 / 75, Ultra 4,000 / 200. A check is one prompt on one engine, sampled once.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "trackers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"Acme\",\n  \"domains\": [\n    \"acme.com\"\n  ],\n  \"prompts\": [\n    \"best CRM for agencies\"\n  ],\n  \"competitors\": [\n    \"Rival\"\n  ],\n  \"engines\": [\n    \"chatgpt\",\n    \"gemini\",\n    \"perplexity\",\n    \"claude\"\n  ],\n  \"samples\": 3,\n  \"cadence\": \"weekly\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c45898b5-a3d3-4680-870b-eb6727c2fed6",
+          "name": "List Citation Trackers",
+          "request": {
+            "name": "List Citation Trackers",
+            "description": {
+              "content": "List this key's citation trackers.\n\n`usage` reports the month and any top-up: `checks_limit`, `checks_used` and\n`checks_remaining` are the plan's monthly allowance; `topup_checks_remaining` is the\npurchased balance (spent only after the month's checks, never reset, expires 12 months\nafter purchase: `topup_next_expiry`); `checks_available` is what a run can spend now.\nThe same block is on `GET /usage` as `citations`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "trackers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42965bd8-ec43-4ef2-9b93-260ad7815004",
+          "name": "Get Citation Tracker",
+          "request": {
+            "name": "Get Citation Tracker",
+            "description": {
+              "content": "Read one tracker.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "trackers",
+                ":tracker_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "1",
+                  "key": "tracker_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74511e6f-ae19-4863-be54-09fd86eec0d6",
+          "name": "Update Citation Tracker",
+          "request": {
+            "name": "Update Citation Tracker",
+            "description": {
+              "content": "Edit a tracker's prompts, engines, competitors, samples, cadence or webhook.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "trackers",
+                ":tracker_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "1",
+                  "key": "tracker_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompts\": [\n    \"best CRM for agencies\"\n  ],\n  \"cadence\": \"monthly\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "622c15bb-718a-4ccf-8414-563045151c85",
+          "name": "Delete Citation Tracker",
+          "request": {
+            "name": "Delete Citation Tracker",
+            "description": {
+              "content": "Stop tracking a brand. Run history is kept until its retention expires.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "trackers",
+                ":tracker_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "1",
+                  "key": "tracker_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4eb01eb0-c2a3-41a2-a82e-69ef2ec4feef",
+          "name": "Run Citation Tracker",
+          "request": {
+            "name": "Run Citation Tracker",
+            "description": {
+              "content": "Run a tracker now. Every prompt × engine × sample counts as one check.\n\nA run needs all of its checks up front: the month's remaining allowance plus any\ntop-up balance. If that is short the run is refused with 429 and nothing is spent.\nBuy more with `POST /citations/topups/checkout`. A check whose engine returned an\nerror is not counted against either balance.\n\nA run that finishes within 45 seconds returns its summary (200). A longer one returns\n**202** with `run_id`, `status: \"running\"` and `poll`; it keeps running, and\n`GET /citations/runs/{run_id}` reports `completed` with the results when it is done.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "trackers",
+                ":tracker_id",
+                "run"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "1",
+                  "key": "tracker_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4e0696a1-493f-46b6-a7d8-83ac89422d2a",
+          "name": "Get Citation Run",
+          "request": {
+            "name": "Get Citation Run",
+            "description": {
+              "content": "Run status plus every per-prompt, per-engine result.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "runs",
+                ":run_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "1",
+                  "key": "run_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3c65334a-7b50-4eb9-b3e9-e680a1622ad5",
+          "name": "Citation Tracker History",
+          "request": {
+            "name": "Citation Tracker History",
+            "description": {
+              "content": "Timeseries of mention rate, citation rate, share of voice and average position.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "trackers",
+                ":tracker_id",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "days",
+                  "value": "90"
+                }
+              ],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "1",
+                  "key": "tracker_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a2390b8-9345-4feb-9f77-947418ef83fc",
+          "name": "Citation Check",
+          "request": {
+            "name": "Citation Check",
+            "description": {
+              "content": "One-off check — no tracker, metered per check. Paid plans only (Starter and up).\n\nSend JSON: {\"brand\": \"Acme\", \"domains\": [\"acme.com\"], \"prompt\": \"best CRM for agencies\",\n\"engines\": [\"chatgpt\"], \"samples\": 1, \"competitors\": [\"Rival\"]}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "check"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"Acme\",\n  \"domains\": [\n    \"acme.com\"\n  ],\n  \"prompt\": \"best CRM for agencies\",\n  \"engines\": [\n    \"chatgpt\"\n  ],\n  \"samples\": 1\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3511dd77-b573-4756-ba16-b771ac7d049b",
+          "name": "Citation Topups Info",
+          "request": {
+            "name": "Citation Topups Info",
+            "description": {
+              "content": "Top-up packs for AI citation checks, and this account's balance.\n\nA top-up is a one-time purchase for when the month's checks run out: 500 checks for\n$10 or 2,000 for $36 (`packs` is the live list). Top-up checks are spent only after\nthe plan's monthly allowance, do not reset on the 1st, and expire 12 months after\npurchase. `can_buy` is false on the free tier, which cannot run citation checks.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "topups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0b28fd3-9896-4fbc-be0d-05aef05e6685",
+          "name": "Citation Auto Reload Get",
+          "request": {
+            "name": "Citation Auto Reload Get",
+            "description": {
+              "content": "Auto-reload setting for AI citation checks, and this month's use.\n\nRead-only. Auto-reload is **off unless you turn it on, and it can only be turned on\nor changed from the dashboard** (signed in), never with an API key, because turning it\non authorizes charges. When on, a run that needs more checks than you have is not\nrefused: we charge the card on your subscription for one pack (`pack`: \"500\" = $10,\n\"2000\" = $36), add the checks and let the run go ahead, every time you run out.\n`reloads_this_month`, `charged_this_month_usd` and `failed_this_month` show what has\nhappened so far; after 2 failed charges in a row it pauses (`paused`) until you save\nthe setting on the dashboard again.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "auto-reload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "deae0ab5-a460-49af-a1f4-648490123138",
+          "name": "Starter Citation Prompts",
+          "request": {
+            "name": "Starter Citation Prompts",
+            "description": {
+              "content": "A starter set of prompts to track, from your topic, brand, competitors and audience.\n\nCovers the six kinds of question buyers ask an AI assistant: `direct_recommendation`,\n`comparison`, `alternatives`, `feature_specific`, `use_case` and `pricing`. Built from\nfixed templates, not a model: the same inputs always return the same list, nothing is\nfetched, and no AI check is spent. A template that needs an input you didn't send is\nleft out, so with no `competitors` the comparison prompts are generic.\n\n`prompts` is the flat list, interleaved across categories, ready to send as `prompts`\nto `POST /citations/trackers`. `categories` groups them; `items` flags which ones name\nyour brand or a competitor.\n\nThe default is two per category, 12 prompts. Run on the default four engines at three\nsamples that is 144 checks, which fits one run a month on Starter (150 checks).\n\nWorks on every plan and is not metered. Treat the list as a first draft: rewrite it in\nthe words your buyers use. To read prompts off a website instead, use\n`GET /citations/prompts/suggest`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "prompts",
+                "starter"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) What you sell, as a buyer would type it, singular: `SEO audit API`, `emergency plumber in Grand Rapids`, `standing desk`",
+                    "type": "text/plain"
+                  },
+                  "key": "topic",
+                  "value": "SEO audit API"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Your brand name. Adds the reputation and pricing questions that name you",
+                    "type": "text/plain"
+                  },
+                  "key": "brand",
+                  "value": "Acme"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Comma-separated competitor names (up to 5). Adds `X vs Y` and `alternatives to X`",
+                    "type": "text/plain"
+                  },
+                  "key": "competitors",
+                  "value": "Rival One,Rival Two"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Who buys it, plural: `marketing agencies`, `homeowners`",
+                    "type": "text/plain"
+                  },
+                  "key": "audience",
+                  "value": "marketing agencies"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Comma-separated features buyers ask about (up to 6): `a free tier, PDF reports`",
+                    "type": "text/plain"
+                  },
+                  "key": "features",
+                  "value": "a free tier,PDF reports"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Comma-separated jobs it is bought for (up to 6): `CI/CD checks`",
+                    "type": "text/plain"
+                  },
+                  "key": "use_cases",
+                  "value": "CI/CD checks"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Prompts per category (default 2 = 12 prompts; 3 = 18)",
+                    "type": "text/plain"
+                  },
+                  "key": "per_category",
+                  "value": "2"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Cut the list to this many, keeping the spread across categories (use your plan's tracked-prompt limit)",
+                    "type": "text/plain"
+                  },
+                  "key": "limit",
+                  "value": "12"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0315498b-4501-4906-bbf1-c6e09afeddc7",
+          "name": "Suggest Citation Prompts",
+          "request": {
+            "name": "Suggest Citation Prompts",
+            "description": {
+              "content": "Suggest prompts to track, read off what the site actually says it does.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "citations",
+                "prompts",
+                "suggest"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  },
+                  "key": "domain",
+                  "value": "seoscoreapi.com"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "description": "Score history and trends.",
+      "item": [
+        {
+          "id": "59384723-180a-4e66-9ed7-c9ea201ebf52",
+          "name": "Score history for a URL",
+          "request": {
+            "name": "Score history for a URL",
+            "description": {
+              "content": "Return historical audit scores + summary trend for a URL audited by this key. Requires Starter plan ($5/mo) or higher.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) The URL whose audit history to fetch",
+                    "type": "text/plain"
+                  },
+                  "key": "url",
+                  "value": "https://seoscoreapi.com"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Max number of points to return",
+                    "type": "text/plain"
+                  },
+                  "key": "limit",
+                  "value": "30"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "UNIX timestamp lower bound (inclusive)",
+                    "type": "text/plain"
+                  },
+                  "key": "since",
+                  "value": "1767225600"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe7e5add-6104-467a-8934-2cd7575189e9",
+          "name": "Every domain you have audited",
+          "request": {
+            "name": "Every domain you have audited",
+            "description": {
+              "content": "List every domain this key has audited with latest score and 30-day trend. Requires Starter plan ($5/mo) or higher.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "history",
+                "domains"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monitoring",
+      "description": "Scheduled re-audits with alerts by email or webhook (Slack incoming webhooks are formatted automatically).",
+      "item": [
+        {
+          "id": "dd3fd5af-5c1d-4a68-a3cf-70ed14a71c82",
+          "name": "Monitor a URL's GEO score (optional webhook)",
+          "request": {
+            "name": "Monitor a URL's GEO score (optional webhook)",
+            "description": {
+              "content": "Create a GEO monitor for a URL. Requires Basic plan or higher.\n\nSend JSON: {\"url\": \"https://example.com\", \"frequency\": \"weekly\", \"alert_threshold\": -5, \"webhook_url\": \"https://...\"}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "geo",
+                "monitor"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://example.com\",\n  \"frequency\": \"weekly\",\n  \"alert_threshold\": -5\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be876266-a915-45ad-9057-3aca1eeccc1c",
+          "name": "Remove a GEO monitor",
+          "request": {
+            "name": "Remove a GEO monitor",
+            "description": {
+              "content": "Remove a GEO monitor. Send JSON: {\"url\": \"https://example.com\"}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "geo",
+                "monitor"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://example.com\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c2e42a6-aa8d-4211-a44a-36f1b8a6ca39",
+          "name": "List GEO monitors",
+          "request": {
+            "name": "List GEO monitors",
+            "description": {
+              "content": "List your active GEO monitors.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "geo",
+                "monitors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9dc3f93b-3784-4790-8992-cd9c1d53aebc",
+          "name": "GEO monitor history",
+          "request": {
+            "name": "GEO monitor history",
+            "description": {
+              "content": "Get score history for a GEO monitor.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "geo",
+                "monitor",
+                ":monitor_id",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "per_page",
+                  "value": "20"
+                }
+              ],
+              "variable": [
+                {
+                  "type": "any",
+                  "value": "1",
+                  "key": "monitor_id",
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  }
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd1dbbb4-d2cc-4514-b2d4-f0fc57fe00f4",
+          "name": "Monitor a URL's score (optional webhook)",
+          "request": {
+            "name": "Monitor a URL's score (optional webhook)",
+            "description": {
+              "content": "Set up SEO score monitoring for a URL. Paid plans only.\n\nSend JSON:\n  {\n    \"url\": \"https://example.com\",\n    \"frequency\": \"daily\" | \"weekly\",\n    \"webhook_url\": \"https://hooks.slack.com/services/...\" (optional),\n    \"alert_threshold\": 5  (optional, points; default 5)\n  }\n\nIf webhook_url is a Slack incoming-webhook URL it is auto-formatted\nas a Slack Block Kit message; otherwise the raw event JSON is POSTed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "monitors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://seoscoreapi.com\",\n  \"frequency\": \"weekly\",\n  \"webhook_url\": \"https://hooks.slack.com/services/T000/B000/XXXX\",\n  \"alert_threshold\": 5\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cccbf6f5-3172-426b-b97c-33b635fae249",
+          "name": "List score monitors",
+          "request": {
+            "name": "List score monitors",
+            "description": {
+              "content": "List your active monitors.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "monitors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "87921f05-3927-4c3d-a035-ba5ae58f1f62",
+          "name": "Remove a score monitor",
+          "request": {
+            "name": "Remove a score monitor",
+            "description": {
+              "content": "Remove a monitor. Send JSON: {\"url\": \"https://example.com\"}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "monitors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://example.com\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "description": "Get a key, check usage.",
+      "item": [
+        {
+          "id": "19456d16-bf93-46c0-8b84-92465cc7051d",
+          "name": "Service health",
+          "request": {
+            "name": "Service health",
+            "description": {},
+            "url": {
+              "path": [
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {},
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "82f80995-9c59-4892-99a4-f24966a6ece2",
+          "name": "Request a free API key (emails a code)",
+          "request": {
+            "name": "Request a free API key (emails a code)",
+            "description": {
+              "content": "Start signup: send a verification code to your email. Send JSON: {\"email\": \"you@example.com\"}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signup"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"you@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e162f276-9921-4d8b-91f1-fc23683970c7",
+          "name": "Verify the emailed code and receive the key",
+          "request": {
+            "name": "Verify the emailed code and receive the key",
+            "description": {
+              "content": "Complete signup: verify your code and get your API key. Send JSON: {\"email\": \"you@example.com\", \"code\": \"123456\"}",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"you@example.com\",\n  \"code\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "10623889-5849-44d4-a9e2-f5f5bff10917",
+          "name": "Usage and plan limits for this key",
+          "request": {
+            "name": "Usage and plan limits for this key",
+            "description": {
+              "content": "Check your API usage and limits.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8a411d44-8a30-4089-911d-15b4b9e52205",
+          "name": "Opt your audits in or out of the public scoreboard",
+          "request": {
+            "name": "Opt your audits in or out of the public scoreboard",
+            "description": {
+              "content": "Opt in or out of the public SEO scoreboard.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "scoreboard",
+                "opt-out"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) true = hide from scoreboard, false = show",
+                    "type": "text/plain"
+                  },
+                  "key": "opt_out",
+                  "value": "true"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {}
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://seoscoreapi.com",
+      "type": "string"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "type": "string",
+      "description": "Your SEO Score API key"
+    }
+  ],
+  "info": {
+    "name": "SEO Score API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "SEO Score API audits a web page and returns JSON: a 0 to 100 score, a grade, category scores, AI readability scores and a prioritized fix list.\n\n**Setup:** get a free key (20 audits a month, no credit card) at https://seoscoreapi.com/#signup, or run *Account > Request a free API key* and then *Verify the emailed code*. Put the key in the `apiKey` variable (collection Variables tab, or the \"SEO Score API\" environment). Every request sends it as the `X-API-Key` header.\n\n**Start with** *Audit > SEO audit of one URL*. Optional query parameters are switched off; tick them to try them.\n\nSome endpoints need a paid plan; the request description says which. Plans: https://seoscoreapi.com/#pricing. Docs: https://seoscoreapi.com/docs.\n",
+      "type": "text/markdown"
+    }
+  }
+}

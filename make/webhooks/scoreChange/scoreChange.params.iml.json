@@ -1,0 +1,33 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL",
+        "required": true,
+        "help": "The page to watch. It must not already have a score monitor on this key."
+    },
+    {
+        "name": "frequency",
+        "type": "select",
+        "label": "Frequency",
+        "required": true,
+        "default": "daily",
+        "options": [
+            {
+                "label": "Daily",
+                "value": "daily"
+            },
+            {
+                "label": "Weekly",
+                "value": "weekly"
+            }
+        ]
+    },
+    {
+        "name": "alert_threshold",
+        "type": "integer",
+        "label": "Alert Threshold (points)",
+        "default": 5,
+        "help": "How many points the score must move before the trigger fires."
+    }
+]

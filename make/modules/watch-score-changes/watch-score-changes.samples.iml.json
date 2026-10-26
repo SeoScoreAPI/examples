@@ -1,0 +1,11 @@
+{
+    "event": "seo_score_change",
+    "url": "https://example.com/",
+    "old_score": 84,
+    "new_score": 76,
+    "old_grade": "B",
+    "new_grade": "C",
+    "change": -8,
+    "direction": "dropped",
+    "report_url": "https://seoscoreapi.com/report/example.com"
+}

@@ -1,0 +1,35 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL",
+        "required": true,
+        "help": "The page to check, for example `https://example.com`. `https://` is added when no scheme is given."
+    },
+    {
+        "name": "cwv",
+        "type": "boolean",
+        "label": "Measure Core Web Vitals",
+        "default": false,
+        "advanced": true,
+        "help": "Adds measured Core Web Vitals. Adds about 10 seconds the first time a URL is measured. Never changes the score."
+    },
+    {
+        "name": "include",
+        "type": "select",
+        "label": "Extras",
+        "multiple": true,
+        "advanced": true,
+        "options": [
+            {
+                "label": "Trackers",
+                "value": "trackers"
+            },
+            {
+                "label": "Conversion",
+                "value": "conversion"
+            }
+        ],
+        "help": "Paid plans. Each adds a few seconds and uses no extra audit."
+    }
+]

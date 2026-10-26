@@ -1,0 +1,40 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL",
+        "required": true,
+        "help": "The page to check, for example `https://example.com`. `https://` is added when no scheme is given."
+    },
+    {
+        "name": "frequency",
+        "type": "select",
+        "label": "Frequency",
+        "required": true,
+        "default": "daily",
+        "options": [
+            {
+                "label": "Daily",
+                "value": "daily"
+            },
+            {
+                "label": "Weekly",
+                "value": "weekly"
+            }
+        ]
+    },
+    {
+        "name": "webhook_url",
+        "type": "url",
+        "label": "Webhook URL",
+        "advanced": true,
+        "help": "Optional. Receives the score-change event as JSON. Slack incoming-webhook URLs get a formatted message."
+    },
+    {
+        "name": "alert_threshold",
+        "type": "integer",
+        "label": "Alert Threshold (points)",
+        "advanced": true,
+        "help": "How many points the score must move before an alert. Default 5."
+    }
+]

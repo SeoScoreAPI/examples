@@ -1,0 +1,9 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL",
+        "required": true,
+        "help": "The monitored URL, as shown by List Score Monitors."
+    }
+]

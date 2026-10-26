@@ -1,0 +1,11 @@
+{
+    "url": "https://example.com/",
+    "score": 81.5,
+    "grade": "B-",
+    "standard": "WCAG 2.1 AA",
+    "summary": {
+        "violations": 4,
+        "passes": 31,
+        "incomplete": 2
+    }
+}

@@ -1,0 +1,28 @@
+[
+    {
+        "label": "Audits",
+        "modules": [
+            "auditUrl",
+            "batchAudit",
+            "checkAccessibility",
+            "getAiReadability",
+            "scoreConversion"
+        ]
+    },
+    {
+        "label": "Monitoring",
+        "modules": [
+            "watchScoreChanges",
+            "createMonitor",
+            "listMonitors",
+            "deleteMonitor"
+        ]
+    },
+    {
+        "label": "Other",
+        "modules": [
+            "getUsage",
+            "makeApiCall"
+        ]
+    }
+]

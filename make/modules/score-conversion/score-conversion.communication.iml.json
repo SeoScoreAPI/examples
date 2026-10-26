@@ -1,0 +1,11 @@
+{
+    "url": "/conversion",
+    "method": "GET",
+    "qs": {
+        "url": "{{parameters.url}}",
+        "page_type": "{{parameters.page_type}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

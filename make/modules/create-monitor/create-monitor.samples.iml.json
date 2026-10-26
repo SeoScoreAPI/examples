@@ -1,0 +1,6 @@
+{
+    "status": "created",
+    "url": "https://example.com/",
+    "frequency": "daily",
+    "alert_threshold": 5
+}

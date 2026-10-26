@@ -1,0 +1,34 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL",
+        "required": true,
+        "help": "The page to check, for example `https://example.com`. `https://` is added when no scheme is given."
+    },
+    {
+        "name": "page_type",
+        "type": "select",
+        "label": "Page Type",
+        "advanced": true,
+        "help": "Detected from the page when left empty.",
+        "options": [
+            {
+                "label": "Local service",
+                "value": "local_service"
+            },
+            {
+                "label": "Ecommerce",
+                "value": "ecommerce"
+            },
+            {
+                "label": "SaaS",
+                "value": "saas"
+            },
+            {
+                "label": "General",
+                "value": "general"
+            }
+        ]
+    }
+]

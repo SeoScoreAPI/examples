@@ -1,0 +1,10 @@
+[
+    {
+        "name": "apiKey",
+        "type": "password",
+        "label": "API Key",
+        "required": true,
+        "editable": true,
+        "help": "Your SEO Score API key. Get a free key at [seoscoreapi.com](https://seoscoreapi.com/#signup); it is shown on your [dashboard](https://seoscoreapi.com/dashboard)."
+    }
+]

@@ -1,0 +1,200 @@
+[
+    {
+        "name": "count",
+        "type": "uinteger",
+        "label": "Count"
+    },
+    {
+        "name": "results",
+        "type": "array",
+        "label": "Results",
+        "spec": {
+            "type": "collection",
+            "spec": [
+                {
+                    "name": "url",
+                    "type": "url",
+                    "label": "URL"
+                },
+                {
+                    "name": "score",
+                    "type": "number",
+                    "label": "Score (0-100)"
+                },
+                {
+                    "name": "grade",
+                    "type": "text",
+                    "label": "Grade"
+                },
+                {
+                    "name": "response_code",
+                    "type": "uinteger",
+                    "label": "Page HTTP Status"
+                },
+                {
+                    "name": "response_time",
+                    "type": "text",
+                    "label": "Response Time"
+                },
+                {
+                    "name": "priorities",
+                    "type": "array",
+                    "label": "Priorities",
+                    "spec": {
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "severity",
+                                "type": "text",
+                                "label": "Severity"
+                            },
+                            {
+                                "name": "category",
+                                "type": "text",
+                                "label": "Category"
+                            },
+                            {
+                                "name": "issue",
+                                "type": "text",
+                                "label": "Issue"
+                            },
+                            {
+                                "name": "fix",
+                                "type": "text",
+                                "label": "Fix"
+                            },
+                            {
+                                "name": "plain_english",
+                                "type": "text",
+                                "label": "Plain English"
+                            },
+                            {
+                                "name": "who_fixes_it",
+                                "type": "text",
+                                "label": "Who Fixes It"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "audit",
+                    "type": "any",
+                    "label": "Category Breakdown"
+                },
+                {
+                    "name": "ai_readability",
+                    "type": "collection",
+                    "label": "AI Readability",
+                    "spec": [
+                        {
+                            "name": "ai_readability_score",
+                            "type": "number",
+                            "label": "Score"
+                        },
+                        {
+                            "name": "ai_readability_grade",
+                            "type": "text",
+                            "label": "Grade"
+                        },
+                        {
+                            "name": "categories",
+                            "type": "any",
+                            "label": "Categories"
+                        },
+                        {
+                            "name": "recommendations",
+                            "type": "any",
+                            "label": "Recommendations"
+                        }
+                    ]
+                },
+                {
+                    "name": "core_web_vitals",
+                    "type": "any",
+                    "label": "Core Web Vitals"
+                },
+                {
+                    "name": "sxo",
+                    "type": "collection",
+                    "label": "SXO",
+                    "spec": [
+                        {
+                            "name": "sxo_score",
+                            "type": "number",
+                            "label": "Score"
+                        },
+                        {
+                            "name": "sxo_grade",
+                            "type": "text",
+                            "label": "Grade"
+                        },
+                        {
+                            "name": "summary",
+                            "type": "text",
+                            "label": "Summary"
+                        }
+                    ]
+                },
+                {
+                    "name": "aeo",
+                    "type": "collection",
+                    "label": "AEO",
+                    "spec": [
+                        {
+                            "name": "aeo_score",
+                            "type": "number",
+                            "label": "Score"
+                        },
+                        {
+                            "name": "aeo_grade",
+                            "type": "text",
+                            "label": "Grade"
+                        },
+                        {
+                            "name": "summary",
+                            "type": "text",
+                            "label": "Summary"
+                        }
+                    ]
+                },
+                {
+                    "name": "aio",
+                    "type": "collection",
+                    "label": "AIO",
+                    "spec": [
+                        {
+                            "name": "aio_score",
+                            "type": "number",
+                            "label": "Score"
+                        },
+                        {
+                            "name": "aio_grade",
+                            "type": "text",
+                            "label": "Grade"
+                        },
+                        {
+                            "name": "summary",
+                            "type": "text",
+                            "label": "Summary"
+                        }
+                    ]
+                },
+                {
+                    "name": "history",
+                    "type": "any",
+                    "label": "Change Since Last Audit"
+                },
+                {
+                    "name": "trackers",
+                    "type": "any",
+                    "label": "Trackers"
+                },
+                {
+                    "name": "conversion",
+                    "type": "any",
+                    "label": "Conversion"
+                }
+            ]
+        }
+    }
+]

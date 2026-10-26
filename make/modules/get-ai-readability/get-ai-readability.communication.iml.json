@@ -1,0 +1,10 @@
+{
+    "url": "/ai-readability",
+    "method": "GET",
+    "qs": {
+        "url": "{{parameters.url}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

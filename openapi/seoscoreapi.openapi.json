@@ -1,0 +1,3814 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SEO Score API",
+    "version": "1.0.0",
+    "description": "SEO Score API audits a web page and returns the result as JSON: an overall score from 0 to\n100, a letter grade, a score per category, AI readability and answer-engine scores, and a\nprioritized fix list. Every fix has a severity, a plain instruction, a jargon-free\n`plain_english` sentence and `who_fixes_it` (developer, content or marketing).\n\n- **80+ checks** per URL on paid plans; free keys are scored on 50+.\n- **Accessibility:** automated WCAG 2.1 A/AA checks with the affected elements.\n- **AI readiness:** AI readability, GEO audits, llms.txt generation and AI citation tracking.\n- **Monitoring:** scheduled re-audits that alert by email or webhook.\n\n**Authentication:** send your key in the `X-API-Key` header. A free key (20 audits a month,\nno credit card) comes from https://seoscoreapi.com/#signup, or from `POST /signup` then\n`POST /verify`. Plans and limits: https://seoscoreapi.com/#pricing.\n\nClient libraries: Python (`pip install seoscoreapi`), Node.js (`npm install seoscoreapi`),\nGo (`github.com/SeoScoreAPI/go-client`), an n8n node, a GitHub Action and an MCP server.\n",
+    "termsOfService": "https://seoscoreapi.com/terms",
+    "contact": {
+      "name": "SEO Score API",
+      "url": "https://seoscoreapi.com",
+      "email": "info@seoscoreapi.com"
+    },
+    "x-logo": {
+      "url": "https://raw.githubusercontent.com/SeoScoreAPI/examples/master/assets/seoscore-icon-512.png",
+      "backgroundColor": "#FFFFFF"
+    }
+  },
+  "externalDocs": {
+    "description": "Documentation",
+    "url": "https://seoscoreapi.com/docs"
+  },
+  "servers": [
+    {
+      "url": "https://seoscoreapi.com"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Audit",
+      "description": "Score one page or several: 80+ checks, a 0 to 100 score, a grade and a prioritized fix list."
+    },
+    {
+      "name": "Accessibility",
+      "description": "Automated WCAG 2.1 A/AA checks. Automated testing does not catch everything."
+    },
+    {
+      "name": "AI readiness",
+      "description": "How well AI systems and answer engines can read, cite and reuse a page."
+    },
+    {
+      "name": "Page analysis",
+      "description": "Trackers, conversion, Search Console quick wins and backlinks."
+    },
+    {
+      "name": "Site crawl",
+      "description": "Crawl a site and score its pages (asynchronous)."
+    },
+    {
+      "name": "Deep Site Audit",
+      "description": "Asynchronous audit from a catalog of 14,000+ checks."
+    },
+    {
+      "name": "AI Citations",
+      "description": "Track whether AI assistants mention and cite your brand."
+    },
+    {
+      "name": "History",
+      "description": "Score history and trends."
+    },
+    {
+      "name": "Monitoring",
+      "description": "Scheduled re-audits with alerts by email or webhook (Slack incoming webhooks are formatted automatically)."
+    },
+    {
+      "name": "Account",
+      "description": "Get a key, check usage."
+    }
+  ],
+  "paths": {
+    "/site-audit": {
+      "post": {
+        "tags": [
+          "Deep Site Audit"
+        ],
+        "summary": "Start a Deep Site Audit",
+        "description": "Queue a Deep Site Audit of one URL and get a `job_id` back immediately.\n\nThe audit fetches the page and its supporting signals (robots.txt, sitemap,\nDNS, TLS, PageSpeed), runs the thousands of catalog checks that apply to it, then an AI analysis pass of up to 150 checks. It takes\nabout 90 seconds once it starts, so poll `GET /site-audit/{job_id}`.\n\n**Included on Pro (20/month) and Ultra (100/month).** Any other key spends one\npurchased Deep Audit credit per audit. A failed audit gives its quota unit or\ncredit back.",
+        "operationId": "startDeepAudit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeepAuditRequest"
+              },
+              "example": {
+                "url": "https://seoscoreapi.com",
+                "business_type": "saas"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Job queued.",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "job_id": "3f9c2a7e1b5d4c8f9a0e6b2d7c1f4a93",
+                  "status": "queued",
+                  "poll": "/site-audit/3f9c2a7e1b5d4c8f9a0e6b2d7c1f4a93"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "URL or webhook refused (not a public http(s) address)."
+          },
+          "402": {
+            "description": "No Deep Audit credits left (keys without Pro/Ultra). Buy a credit pack or upgrade."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "429": {
+            "description": "Rate limit, monthly quota, or queue backpressure. Honour `Retry-After`."
+          },
+          "503": {
+            "description": "Engine temporarily unavailable. Retry after `Retry-After` seconds."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/deep-audit/usage": {
+      "get": {
+        "tags": [
+          "Deep Site Audit"
+        ],
+        "summary": "Deep Site Audit allowance for this key",
+        "description": "Deep Site Audits used and remaining this calendar month (UTC) for this key.\n\nSeparate from `GET /usage`, which reports the per-URL audit allowance. Keys\nwithout Pro/Ultra show `remaining: 0` here and run on credits instead; see\nyour dashboard for the credit balance.",
+        "operationId": "deepAuditUsage",
+        "responses": {
+          "200": {
+            "description": "This month's Deep Site Audit usage.",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "tier": "pro",
+                  "site_audit": {
+                    "used": 3,
+                    "remaining": 17
+                  },
+                  "serp": {
+                    "used": 0,
+                    "remaining": 250
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "429": {
+            "description": "Rate limit, monthly quota, or queue backpressure. Honour `Retry-After`."
+          },
+          "503": {
+            "description": "Engine temporarily unavailable. Retry after `Retry-After` seconds."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/site-audit/{job_id}": {
+      "get": {
+        "tags": [
+          "Deep Site Audit"
+        ],
+        "summary": "Poll a Deep Site Audit",
+        "description": "Status of a Deep Site Audit: `queued` (with `queue_position` and\n`eta_seconds`), `running` (with `progress` 0-100 and `stage`), `completed`\n(with `result`) or `failed` (with `error`). Poll every 5-10 seconds. Only the\nkey that started a job can read it.",
+        "operationId": "getDeepAudit",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            },
+            "example": "JOB_ID_FROM_START"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job state. `result` is present once `status` is `completed`.",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "queued": {
+                    "value": {
+                      "job_id": "3f9c…",
+                      "status": "queued",
+                      "progress": 0,
+                      "queue_position": 2,
+                      "eta_seconds": 150
+                    }
+                  },
+                  "running": {
+                    "value": {
+                      "job_id": "3f9c…",
+                      "status": "running",
+                      "progress": 60,
+                      "stage": "Section 6"
+                    }
+                  },
+                  "completed": {
+                    "value": {
+                      "job_id": "3f9c…",
+                      "status": "completed",
+                      "progress": 100,
+                      "stage": "done",
+                      "result": {
+                        "website_url": "https://example.com",
+                        "scores": {
+                          "lai_score": 3.23,
+                          "lai_grade": "fair",
+                          "seo_score": 2.53,
+                          "ai_score": 3.66,
+                          "section_scores": {
+                            "1": 4.37,
+                            "2": 2.69,
+                            "9": 1.04
+                          },
+                          "tasks_scored": 5782,
+                          "tasks_failed": 1779
+                        },
+                        "sections": {
+                          "1": {
+                            "name": "Technical Foundation & Rendering",
+                            "score": 4.37
+                          }
+                        },
+                        "findings": [
+                          {
+                            "task_id": "2.2.01",
+                            "section": 2,
+                            "severity": "high",
+                            "weight": "critical",
+                            "evidence": "No XML sitemap found",
+                            "count": 1
+                          }
+                        ],
+                        "coverage": {
+                          "scored_tasks": 5782,
+                          "hybrid_ai_tasks": 150,
+                          "total_tasks": 14385
+                        }
+                      }
+                    }
+                  },
+                  "failed": {
+                    "value": {
+                      "job_id": "3f9c…",
+                      "status": "failed",
+                      "progress": 40,
+                      "stage": "Section 4",
+                      "error": "…"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown job, or a job started by a different key."
+          },
+          "401": {
+            "description": "Missing or invalid API key."
+          },
+          "429": {
+            "description": "Rate limit, monthly quota, or queue backpressure. Honour `Retry-After`."
+          },
+          "503": {
+            "description": "Engine temporarily unavailable. Retry after `Retry-After` seconds."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Service health",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": []
+      }
+    },
+    "/signup": {
+      "post": {
+        "summary": "Request a free API key (emails a code)",
+        "description": "Start signup: send a verification code to your email. Send JSON: {\"email\": \"you@example.com\"}",
+        "operationId": "signup",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              },
+              "example": {
+                "email": "you@example.com"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": []
+      }
+    },
+    "/verify": {
+      "post": {
+        "summary": "Verify the emailed code and receive the key",
+        "description": "Complete signup: verify your code and get your API key. Send JSON: {\"email\": \"you@example.com\", \"code\": \"123456\"}",
+        "operationId": "verifySignup",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "code": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "code"
+                ]
+              },
+              "example": {
+                "email": "you@example.com",
+                "code": "123456"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": []
+      }
+    },
+    "/usage": {
+      "get": {
+        "summary": "Usage and plan limits for this key",
+        "description": "Check your API usage and limits.",
+        "operationId": "getUsage",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/ai-readability": {
+      "get": {
+        "summary": "AI readability score of one URL",
+        "description": "Score how well a page can be consumed by AI/LLM systems. Requires an API key.",
+        "operationId": "aiReadability",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The URL to analyze for AI readability",
+              "title": "Url"
+            },
+            "description": "The URL to analyze for AI readability",
+            "example": "https://seoscoreapi.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The AI readability result. The example is a real result for https://seoscoreapi.com with each `checks` list cut to two entries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiReadability"
+                },
+                "example": {
+                  "url": "https://seoscoreapi.com",
+                  "ai_readability_score": 95,
+                  "ai_readability_grade": "A+",
+                  "categories": {
+                    "crawl_accessibility": {
+                      "score": 25,
+                      "max": 25,
+                      "checks": [
+                        {
+                          "name": "ssr_content",
+                          "status": "pass",
+                          "score": 8,
+                          "max": 8,
+                          "detail": "Server-rendered content detected"
+                        },
+                        {
+                          "name": "ai_bot_access",
+                          "status": "pass",
+                          "score": 5,
+                          "max": 5,
+                          "detail": "All major AI bots allowed"
+                        }
+                      ]
+                    },
+                    "structural_markup": {
+                      "score": 24,
+                      "max": 25,
+                      "checks": [
+                        {
+                          "name": "schema_jsonld",
+                          "status": "pass",
+                          "score": 8,
+                          "max": 8,
+                          "detail": "Types: SoftwareApplication, Organization, FAQPage, Product, WebSite"
+                        },
+                        {
+                          "name": "semantic_html",
+                          "status": "pass",
+                          "score": 5,
+                          "max": 5,
+                          "detail": "46 semantic elements, 22 divs (68% ratio)"
+                        }
+                      ]
+                    },
+                    "content_extractability": {
+                      "score": 26,
+                      "max": 30,
+                      "checks": [
+                        {
+                          "name": "answer_first",
+                          "status": "pass",
+                          "score": 6,
+                          "max": 6,
+                          "detail": "6/6 sections lead with facts"
+                        },
+                        {
+                          "name": "chunk_friendly",
+                          "status": "warning",
+                          "score": 3,
+                          "max": 6,
+                          "detail": "3/6 — sections sized for RAG chunking"
+                        }
+                      ]
+                    },
+                    "ai_discoverability": {
+                      "score": 20,
+                      "max": 20,
+                      "checks": [
+                        {
+                          "name": "open_graph",
+                          "status": "pass",
+                          "score": 4,
+                          "max": 4,
+                          "detail": "5/5 OG tags present"
+                        },
+                        {
+                          "name": "semantic_urls",
+                          "status": "pass",
+                          "score": 3,
+                          "max": 3,
+                          "detail": "/"
+                        }
+                      ]
+                    }
+                  },
+                  "recommendations": []
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The URL was refused before any audit ran (malformed, or a private or internal address).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "Invalid URL",
+                  "reason": "invalid_url"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "Invalid or inactive API key. Get one at POST /signup"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The page could not be loaded, so there is nothing to score. `reason` says why. Also returned when `url` is missing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "The site refused our crawler.",
+                  "reason": "blocked"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit or plan quota reached. Wait for `Retry-After` when present, or upgrade the plan.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "Rate limit exceeded"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AI readiness"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/trackers": {
+      "get": {
+        "summary": "Tracking pixels and tags on a page",
+        "description": "List the third-party trackers and pixels a page loads.\n\nLoads the page in a real browser, waits a few seconds, and reports every analytics,\nadvertising, session-replay, chat, marketing-automation, A/B-testing and monitoring\ntool it saw, including pixels a tag manager injects (which never appear in the page\nsource).\n\nEach item in `trackers` has `vendor`, `category`, `found_in` (`html`, `network`),\n`injected` (seen on the network but not in the source), `requests`,\n`transfer_bytes`, `evidence` (up to 3 URLs) and, where one is exposed, `ids`\n(a GA4, GTM or Google Ads id). `summary` totals them by category and names the\n`consent_manager` on the page, if any.\n\nThis lists what loaded during one visit with no interaction. It does not determine\nwhether a tracker waited for consent, and it is not legal advice.\n\nCounts as one audit against your plan. A page we can't load returns **422** with\n`reason`, and is not counted.",
+        "operationId": "trackerInventory",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The page to inspect (e.g., https://example.com)",
+              "title": "Url"
+            },
+            "description": "The page to inspect (e.g., https://example.com)",
+            "example": "https://seoscoreapi.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Page analysis"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/conversion": {
+      "get": {
+        "summary": "Conversion score of a page",
+        "description": "Score how well a page turns a visitor into a lead or a sale.\n\nReads the page's HTML (the same fetch `/audit` uses: plain HTTP, then a real browser\nwhen the page is built by JavaScript) and scores five areas from 0 to 100:\n\n- `headline`: one H1 that says what the page offers, with a sentence under it\n- `cta`: a call to action near the top, worded as an action, repeated down the page.\n  A phone link and \"Add to cart\" both count\n- `trust`: testimonials, ratings, guarantees, contact details, credentials\n- `forms`: how many fields the form asks for, and whether they are labeled\n- `objections`: price or a path to it, FAQ, what happens next, shipping and returns\n\nReturns `score`, `grade`, `page_type`, `categories` (per-area score, weight and\nchecks), `signals` (what we found: the H1, the button labels, the trust evidence)\nand `priorities`, the fix list. Every priority has `severity`, `category`, `issue`,\n`fix`, `plain_english` and `who_fixes_it` (`developer` | `content` | `marketing`),\nplus `evidence` where there is some.\n\n**What it does not do.** It does not measure your conversion rate; only your\nanalytics can. \"Near the top\" is source order, not pixels: we do not lay the page\nout. A form embedded from another service (HubSpot, Calendly, Typeform) is reported\nbut not scored, and a page with no form is not marked down for it: `forms.score`\nis `null` and its weight goes to the other areas. A page over 3 MB is scored on what\nwe read, and nothing is reported as missing.\n\nCounts as one audit against your plan. A page we can't load or can't read returns\n**422** with `reason` and is not counted. Free keys get the scores and the first\ntwo priorities; paid plans get the full list. `?include=conversion` on `/audit`\n(paid plans) adds the same block to an audit at no extra charge.",
+        "operationId": "conversionScore",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The page to score (e.g., https://example.com/services)",
+              "title": "Url"
+            },
+            "description": "The page to score (e.g., https://example.com/services)",
+            "example": "https://seoscoreapi.com"
+          },
+          {
+            "name": "page_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "`local_service`, `ecommerce`, `saas` or `general`. Detected from the page when omitted.",
+              "title": "Page Type",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "`local_service`, `ecommerce`, `saas` or `general`. Detected from the page when omitted.",
+            "example": "saas"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Page analysis"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/quick-wins": {
+      "post": {
+        "summary": "Page-two quick wins from your Search Console rows",
+        "description": "Find the page-2 quick wins in your Search Console data.\n\nSend your own Search Console rows and get back the queries ranking 11-20 that are\nworth working on first, each with the page it lands on, an opportunity score and an\nestimate of the extra clicks from moving it onto page 1.\n\n**We do not connect to your Search Console.** You export the rows (Performance\nreport CSV, or the Search Analytics API with the `query` and `page` dimensions)\nand send them. Nothing is fetched and nothing is stored.\n\nSend JSON with either `rows` or `csv`:\n\n- `rows`: `[{\"query\": \"...\", \"page\": \"https://...\", \"clicks\": 3, \"impressions\": 900, \"position\": 11.4}]`.\n  The API's own shape (`{\"keys\": [\"query\", \"page\"], \"clicks\": ...}`) works too. `page` is optional.\n- `csv`: the export as text, with a header row. Column names are matched\n  (`Top queries`/`Query`, `Page`, `Clicks`, `Impressions`, `Position`).\n- `min_impressions` (default 50), `target_position` (1-10, default 5), `limit` (default 25, max 200)\n- `exclude_terms`: words to leave out, such as your brand name\n- `ctr_curve`: your own expected click-through rate by position, `{\"1\": 0.28, \"2\": 0.15}`\n\nEach item in `quick_wins` has `query`, `page`, `position`, `impressions`, `clicks`,\n`ctr`, `expected_ctr`, `opportunity_score` (0-100: 40% how close to page 1, 40%\nimpressions, 20% how far clicks fall short of expected), `estimated_extra_clicks`\nat the target position with a range (position 10 to position 3), an `action`\n(`small_push`, `improve_page`, `fix_snippet`, `consolidate`) and a `plain_english`\nsentence. `also_ranking_pages` lists other pages of yours showing for the same query.\n`pages` groups the wins by landing page.\n\n**Read the numbers as estimates.** Google publishes no click-through curve; the\ndefault is a rough one. Extra clicks hold impressions constant and assume every\nimpression is a person. Position is an average over the export's dates, countries\nand devices.\n\n**Send the whole export, not only page 2.** With 500 or more page-1 impressions in\nthe rows, `ctr_calibration` compares the clicks your page-1 results earned with\nwhat the curve predicts (`ratio`), and each win also gets\n`estimated_extra_clicks_calibrated` (the estimate times that ratio). A ratio far\nbelow 1 usually means many of the impressions are rank trackers or bots.\n\nWorks on every plan. Counts as one audit; a request we reject (400) is not counted.\nUp to 1 MB of JSON per request (roughly 5,000 rows with URLs); filter the export\nto positions 11-20 first if yours is larger.",
+        "operationId": "quickWins",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rows": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Search Console rows: query, page (optional), clicks, impressions, position."
+                  },
+                  "csv": {
+                    "type": "string",
+                    "description": "The Performance export as text, with its header row. Send rows or csv."
+                  },
+                  "min_impressions": {
+                    "type": "integer",
+                    "default": 50
+                  },
+                  "target_position": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "default": 5
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "maximum": 200,
+                    "default": 25
+                  },
+                  "exclude_terms": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ctr_curve": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "number"
+                    },
+                    "description": "Expected click-through rate by position."
+                  }
+                }
+              },
+              "example": {
+                "rows": [
+                  {
+                    "query": "seo audit api",
+                    "page": "https://example.com/",
+                    "clicks": 3,
+                    "impressions": 900,
+                    "position": 11.4
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Page analysis"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/crawl": {
+      "post": {
+        "summary": "Start a site crawl",
+        "description": "Start a multi-page crawl of one site (async).\n\nFollows same-site links from `url`, plus the URLs in the sitemap, up to your page cap,\nand reports broken pages, redirects, duplicate titles and headings, pages missing a\ntitle or heading, orphan pages (in the sitemap, linked from nowhere crawled) and slow\npages. Plain HTTP requests, 4 at a time, robots.txt honoured.\n\n**Limits.** Pro: 25 pages per crawl, 20 crawls a month. Ultra: 100 pages, 100 crawls a\nmonth. Any other plan: one Deep Audit credit covers a 25-page crawl. A failed crawl is\nnot counted and a credit is returned.\n\nReturns `job_id`; poll `GET /crawl/{job_id}`. `site_map` is a shareable page with the\nsite diagram once the crawl has finished.",
+        "operationId": "startCrawl",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrawlRequest"
+              },
+              "example": {
+                "url": "https://seoscoreapi.com",
+                "max_pages": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Site crawl"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/crawl/{job_id}": {
+      "get": {
+        "summary": "Get a site crawl",
+        "description": "Poll a site crawl. `status` is `queued`, `running`, `completed` or `failed`.\n\nWhile running, `pages_done` counts up. When completed, `result` holds `summary`,\n`issues` (broken_links, redirects, duplicate_titles, duplicate_h1, missing_title,\nmissing_h1, orphan_pages, slow_pages, noindex_pages, rate_limited), `pages` (one row\nper URL: status, depth, redirects, response_ms, title, h1, canonical, inlinks) and\n`links` (the internal link graph). Only the key that started a crawl can read it.",
+        "operationId": "getCrawl",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            },
+            "example": "JOB_ID_FROM_START"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Site crawl"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/audit": {
+      "get": {
+        "summary": "SEO audit of one URL",
+        "description": "Run a comprehensive SEO audit on any URL.\n\nReturns an overall score (0–100), letter grade, prioritized fix\nrecommendations, and a `audit` block of category breakdowns\n(SEO, performance, accessibility, AI readability).\n\nPaid plans (Starter $5/mo and up) additionally receive:\n  - `sxo`, `aeo`, `aio` — extended scoring blocks\n  - `history` — delta vs the previous audit for this URL\n    (overall score, grade change, per-category deltas, days since)\n  - Full priorities list and uncapped per-category checks\n\nEvery priority carries `plain_english` (one jargon-free sentence) and\n`who_fixes_it` (`developer` | `content` | `marketing`) next to `issue`/`fix`.\n\n`?include=trackers` (paid plans) adds a `trackers` block: the same inventory as\n`GET /trackers`, at no extra audit. It adds a few seconds.\n\n`?include=conversion` (paid plans) adds a `conversion` block: the same score and\nfix list as `GET /conversion`, at no extra audit. Combine them: `?include=trackers,conversion`.\n\nFree / demo keys see gated placeholders for the paid blocks\n(`_extended_gated`, `history._gated`, `_priorities_gated`).\n\n**Core Web Vitals are opt-in: `?cwv=true`** (every plan, no extra charge, never\npart of the score). The response always carries a `core_web_vitals` object with\n`lcp_ms`, `inp_ms`, `cls`, `fcp_ms`, `ttfb_ms`, `checks` and a `status`:\n\n  - `not_requested` (the default): no measurement was made; the metrics are\n    `null` and `hint` says how to ask. A default audit never waits on PageSpeed.\n  - `ok`: measured by Google PageSpeed Insights. `source` is `field` (real-user\n    Chrome UX Report data) or `lab`; `_cached: true` when it came from the\n    24 hour cache. A cached measurement is included even without `cwv=true`,\n    because it costs no time.\n  - `unavailable`: `cwv=true` was set but PageSpeed failed, rate limited us or\n    was too slow; `reason` says which. The audit itself still succeeds.\n  - `unavailable` with `pending: true`: PageSpeed was still measuring when the\n    wait ran out (about 25 seconds). The measurement finishes in the\n    background; the next audit of that URL has it.\n\nWith `cwv=true` the first audit of a URL takes about 10 seconds longer; repeats\nwithin 24 hours are instant. Set your client timeout to 60 seconds.\n\nRequires an API key passed in the `X-API-Key` header.",
+        "operationId": "auditUrl",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The URL to audit (e.g., https://example.com)",
+              "title": "Url"
+            },
+            "description": "The URL to audit (e.g., https://example.com)",
+            "example": "https://seoscoreapi.com"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Comma-separated extras on paid plans: `trackers` (tracker and pixel inventory) and `conversion` (conversion score). Each adds a few seconds.",
+              "title": "Include",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "Comma-separated extras on paid plans: `trackers` (tracker and pixel inventory) and `conversion` (conversion score). Each adds a few seconds.",
+            "example": "trackers"
+          },
+          {
+            "name": "cwv",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Set `cwv=true` to include measured Core Web Vitals (LCP, INP, CLS, FCP, TTFB from Google PageSpeed Insights) in `core_web_vitals`. Off by default because the first measurement of a URL adds about 10 seconds (up to 25); it is then cached for 24 hours. Available on every plan, costs nothing extra and never changes the score.",
+              "default": false,
+              "title": "Cwv"
+            },
+            "description": "Set `cwv=true` to include measured Core Web Vitals (LCP, INP, CLS, FCP, TTFB from Google PageSpeed Insights) in `core_web_vitals`. Off by default because the first measurement of a URL adds about 10 seconds (up to 25); it is then cached for 24 hours. Available on every plan, costs nothing extra and never changes the score.",
+            "example": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The audit. The example is a real audit of https://seoscoreapi.com with each `checks` list cut to two entries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditResponse"
+                },
+                "example": {
+                  "url": "https://seoscoreapi.com",
+                  "score": 91.546,
+                  "grade": "A+",
+                  "response_code": 200,
+                  "response_time": "0.22s",
+                  "html_truncated": false,
+                  "audit": {
+                    "meta": {
+                      "score": 87.75,
+                      "checks": [
+                        {
+                          "name": "title",
+                          "status": "warning",
+                          "value": "SEO Score API — Free SEO Audit API, 80+ Checks per URL, JSON in Seconds",
+                          "score": 60,
+                          "recommendation": "Title may be truncated (71 chars). Keep under 60."
+                        },
+                        {
+                          "name": "meta_description",
+                          "status": "warning",
+                          "value": "Free SEO Score API: 80+ checks per URL (50+ scored on the free tier), scored JSON in seconds — on-page, speed, accessibility & AI readability. No credit card, start auditing free.",
+                          "score": 60,
+                          "recommendation": "Description may be truncated (179 chars). Keep under 160."
+                        }
+                      ]
+                    },
+                    "technical": {
+                      "score": 91.111,
+                      "checks": [
+                        {
+                          "name": "response_time",
+                          "status": "pass",
+                          "value": "0.22s",
+                          "score": 100
+                        },
+                        {
+                          "name": "https",
+                          "status": "pass",
+                          "value": true,
+                          "score": 100
+                        }
+                      ]
+                    },
+                    "social": {
+                      "score": 100.0,
+                      "checks": [
+                        {
+                          "name": "open_graph",
+                          "status": "pass",
+                          "value": {
+                            "og:title": "SEO Score API — Free SEO Audit API, 80+ Checks per URL, JSON in Seconds",
+                            "og:description": "A free SEO audit API for developers. One call, 80+ checks per URL, JSON back in seconds. SDKs for Python, Node, n8n, and GitHub Actions.",
+                            "og:image": "https://seoscoreapi.com/og-image.png",
+                            "og:type": "website",
+                            "og:url": "https://seoscoreapi.com"
+                          },
+                          "score": 100
+                        },
+                        {
+                          "name": "twitter_card",
+                          "status": "pass",
+                          "value": "summary_large_image",
+                          "score": 100
+                        }
+                      ]
+                    },
+                    "performance": {
+                      "score": 90.0,
+                      "checks": [
+                        {
+                          "name": "html_size",
+                          "status": "warning",
+                          "value": "101.7 KB",
+                          "score": 60,
+                          "recommendation": "HTML is getting large. Consider reducing inline resources."
+                        },
+                        {
+                          "name": "dom_size",
+                          "status": "pass",
+                          "value": 701,
+                          "score": 100
+                        }
+                      ]
+                    },
+                    "accessibility": {
+                      "score": 100.0,
+                      "checks": [
+                        {
+                          "name": "lang",
+                          "status": "pass",
+                          "value": "en",
+                          "score": 100
+                        },
+                        {
+                          "name": "image_alt_coverage",
+                          "status": "info",
+                          "value": "100%",
+                          "score": 100
+                        }
+                      ]
+                    }
+                  },
+                  "priorities": [
+                    {
+                      "severity": "high",
+                      "category": "technical",
+                      "issue": "Schema missing required fields",
+                      "fix": "Add required schema.org properties to make items eligible for Google rich results",
+                      "plain_english": "The page's machine-readable labels are missing required details, so it isn't eligible for rich results.",
+                      "who_fixes_it": "developer"
+                    },
+                    {
+                      "severity": "high",
+                      "category": "technical",
+                      "issue": "Schema policy violations",
+                      "fix": "Make FAQ/HowTo content visible to users, remove self-serving reviews, consolidate duplicate Organization blocks",
+                      "plain_english": "The page's machine-readable labels break Google's rules, which can cost the site its rich results.",
+                      "who_fixes_it": "developer"
+                    },
+                    {
+                      "severity": "low",
+                      "category": "technical",
+                      "issue": "Schema missing recommended fields",
+                      "fix": "Add recommended schema.org properties to unlock additional rich-result enhancements",
+                      "plain_english": "The page's machine-readable labels could include more detail to unlock extra search features.",
+                      "who_fixes_it": "developer"
+                    }
+                  ],
+                  "ai_readability": {
+                    "url": "https://seoscoreapi.com",
+                    "ai_readability_score": 95,
+                    "ai_readability_grade": "A+",
+                    "categories": {
+                      "crawl_accessibility": {
+                        "score": 25,
+                        "max": 25,
+                        "checks": [
+                          {
+                            "name": "ssr_content",
+                            "status": "pass",
+                            "score": 8,
+                            "max": 8,
+                            "detail": "Server-rendered content detected"
+                          },
+                          {
+                            "name": "ai_bot_access",
+                            "status": "pass",
+                            "score": 5,
+                            "max": 5,
+                            "detail": "All major AI bots allowed"
+                          }
+                        ]
+                      },
+                      "structural_markup": {
+                        "score": 24,
+                        "max": 25,
+                        "checks": [
+                          {
+                            "name": "schema_jsonld",
+                            "status": "pass",
+                            "score": 8,
+                            "max": 8,
+                            "detail": "Types: SoftwareApplication, Organization, FAQPage, Product, WebSite"
+                          },
+                          {
+                            "name": "semantic_html",
+                            "status": "pass",
+                            "score": 5,
+                            "max": 5,
+                            "detail": "46 semantic elements, 22 divs (68% ratio)"
+                          }
+                        ]
+                      },
+                      "content_extractability": {
+                        "score": 26,
+                        "max": 30,
+                        "checks": [
+                          {
+                            "name": "answer_first",
+                            "status": "pass",
+                            "score": 6,
+                            "max": 6,
+                            "detail": "6/6 sections lead with facts"
+                          },
+                          {
+                            "name": "chunk_friendly",
+                            "status": "warning",
+                            "score": 3,
+                            "max": 6,
+                            "detail": "3/6 — sections sized for RAG chunking"
+                          }
+                        ]
+                      },
+                      "ai_discoverability": {
+                        "score": 20,
+                        "max": 20,
+                        "checks": [
+                          {
+                            "name": "open_graph",
+                            "status": "pass",
+                            "score": 4,
+                            "max": 4,
+                            "detail": "5/5 OG tags present"
+                          },
+                          {
+                            "name": "semantic_urls",
+                            "status": "pass",
+                            "score": 3,
+                            "max": 3,
+                            "detail": "/"
+                          }
+                        ]
+                      }
+                    },
+                    "recommendations": []
+                  },
+                  "core_web_vitals": {
+                    "status": "unavailable",
+                    "reason": "PSI returned HTTP 429",
+                    "lcp_ms": null,
+                    "inp_ms": null,
+                    "cls": null,
+                    "fcp_ms": null,
+                    "ttfb_ms": null,
+                    "checks": []
+                  },
+                  "sxo": {
+                    "sxo_score": 78,
+                    "sxo_grade": "B",
+                    "checks": [
+                      {
+                        "name": "page_speed",
+                        "status": "pass",
+                        "score": 5,
+                        "max": 5,
+                        "detail": "0.19s — excellent"
+                      },
+                      {
+                        "name": "mobile_viewport",
+                        "status": "pass",
+                        "score": 4,
+                        "max": 4,
+                        "detail": "Responsive viewport configured"
+                      }
+                    ],
+                    "summary": "Good experience with a few improvements that could boost engagement."
+                  },
+                  "aeo": {
+                    "aeo_score": 94,
+                    "aeo_grade": "A+",
+                    "checks": [
+                      {
+                        "name": "faq_howto_schema",
+                        "status": "pass",
+                        "score": 4,
+                        "max": 5,
+                        "detail": "FAQPage schema found"
+                      },
+                      {
+                        "name": "question_headings",
+                        "status": "pass",
+                        "score": 4,
+                        "max": 4,
+                        "detail": "6 question-phrased headings — strong AEO signal"
+                      }
+                    ],
+                    "summary": "Highly optimised for answer engines — strong schema, Q&A structure, and snippet-ready content."
+                  },
+                  "aio": {
+                    "aio_score": 85,
+                    "aio_grade": "A",
+                    "checks": [
+                      {
+                        "name": "ai_bot_access",
+                        "status": "pass",
+                        "score": 5,
+                        "max": 5,
+                        "detail": "All AI crawlers allowed: GPTBot, ClaudeBot, PerplexityBot"
+                      },
+                      {
+                        "name": "llms_txt",
+                        "status": "pass",
+                        "score": 4,
+                        "max": 4,
+                        "detail": "/llms.txt found — clear instructions for LLM crawlers"
+                      }
+                    ],
+                    "summary": "Excellent AI optimisation — content is structured, credible, and accessible to LLM systems."
+                  },
+                  "history": {
+                    "first_audit": false,
+                    "audits_recorded": 27,
+                    "previous_audit_at": 1791297332.2136734,
+                    "days_since_last": 1.14,
+                    "delta": {
+                      "score": -0.04,
+                      "grade_change": null,
+                      "categories": {
+                        "meta": -0.12,
+                        "technical": 0.0,
+                        "social": 0.0,
+                        "performance": 0.0,
+                        "accessibility": 0.0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The URL was refused before any audit ran (malformed, or a private or internal address).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "Invalid URL",
+                  "reason": "invalid_url"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "Invalid or inactive API key. Get one at POST /signup"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The page could not be loaded, so there is nothing to score. `reason` says why. Also returned when `url` is missing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "The site refused our crawler.",
+                  "reason": "blocked"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit or plan quota reached. Wait for `Retry-After` when present, or upgrade the plan.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "detail": "Rate limit exceeded"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Audit"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/audit/export": {
+      "get": {
+        "summary": "Audit report as PDF, Markdown or CSV",
+        "description": "Run an audit and download it as a PDF, Markdown or CSV report.\n\nSame audit, same usage and same plan gating as `GET /audit` (it counts as one\naudit): the file contains exactly what your key's `/audit` JSON contains,\nincluding `plain_english` and `who_fixes_it` on every priority fix. Free keys get\nthe free slice with a note on what the full report adds.\n\n**White-label (Pro and Ultra):** `brand_name`, `brand_color` and `logo_url` put your\nagency's name, colour and logo on the report instead of ours. On other plans\nthose parameters return `403`.",
+        "operationId": "exportAudit",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The URL to audit (e.g., https://example.com)",
+              "title": "Url"
+            },
+            "description": "The URL to audit (e.g., https://example.com)",
+            "example": "https://seoscoreapi.com"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "pdf | md | csv",
+              "title": "Format"
+            },
+            "description": "pdf | md | csv",
+            "example": "pdf"
+          },
+          {
+            "name": "brand_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "White-label: your agency name (Pro and Ultra)",
+              "title": "Brand Name",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "White-label: your agency name (Pro and Ultra)",
+            "example": "Your Agency"
+          },
+          {
+            "name": "brand_color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "White-label: accent colour, #rrggbb (Pro and Ultra)",
+              "title": "Brand Color",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "White-label: accent colour, #rrggbb (Pro and Ultra)",
+            "example": "#1a73e8"
+          },
+          {
+            "name": "logo_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "White-label: https URL of a PNG/JPEG/WebP logo, max 300 KB (Pro and Ultra)",
+              "title": "Logo Url",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "White-label: https URL of a PNG/JPEG/WebP logo, max 300 KB (Pro and Ultra)",
+            "example": "https://example.com/logo.png"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Audit"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/compare": {
+      "post": {
+        "summary": "Compare 2 to 5 URLs side by side",
+        "description": "Compare 2–5 URLs side by side with a structured diff.\n\nReturns each URL's score + category breakdown plus a `diff` object\nthat tells you who is ahead and by how much, per category, per URL\npair. Built for agencies who embed comparisons in sales decks and\nfor devs who want a one-call sanity check across an old vs. new\ndeploy.\n\nSend JSON: {\"urls\": [\"https://a.com\", \"https://b.com\", ...]}\nRequires Basic plan ($15/mo) or higher.",
+        "operationId": "compareUrls",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 2,
+                    "maxItems": 5
+                  }
+                },
+                "required": [
+                  "urls"
+                ]
+              },
+              "example": {
+                "urls": [
+                  "https://seoscoreapi.com",
+                  "https://example.com"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Audit"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/audit/batch": {
+      "post": {
+        "summary": "Audit up to 10 URLs in one request",
+        "description": "Audit multiple URLs in one request. Paid plans only (Starter $5/mo and up).\n\nEach URL is audited concurrently and counts against your monthly\naudit quota. Results include the same `history` delta block as\n`/audit` and the extended `sxo`/`aeo`/`aio` scores.\n\nSend JSON: {\"urls\": [\"https://a.com\", \"https://b.com\", ...]}\nMax 10 URLs per request. URLs that fail validation are returned\nwith an `error` field instead of a score.\n\nAdd `\"cwv\": true` to the body to include measured Core Web Vitals for every\nURL (see `GET /audit` for the `core_web_vitals` statuses). It is off by default:\neach result then says `status: \"not_requested\"`, or carries a measurement that\nwas already cached. With it on, the measurements run side by side while the\nURLs are audited, and the batch as a whole waits at most about 50 seconds on\nthem; a URL whose measurement is not ready reads `unavailable` + `pending: true`\nand has it on the next audit. Set your client timeout to 180 seconds.",
+        "operationId": "batchAudit",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "maxItems": 10
+                  },
+                  "cwv": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include measured Core Web Vitals for every URL. Off by default: it is slower. See `core_web_vitals` on `GET /audit`."
+                  }
+                },
+                "required": [
+                  "urls"
+                ]
+              },
+              "example": {
+                "urls": [
+                  "https://seoscoreapi.com",
+                  "https://example.com"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Audit"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/llms-generator": {
+      "get": {
+        "summary": "Generate an llms.txt for a domain",
+        "description": "Generate an llms.txt file for any domain.\n\nFree / no-key: basic version. Basic plan ($15/mo) and higher: curated version\nwith per-page descriptions pulled from each page's meta. Returns plain text\nsuitable for saving directly to /llms.txt on the user's site.",
+        "operationId": "generateLlmsTxt",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Domain to generate llms.txt for (e.g. example.com)",
+              "title": "Domain"
+            },
+            "description": "Domain to generate llms.txt for (e.g. example.com)",
+            "example": "seoscoreapi.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AI readiness"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/backlinks": {
+      "get": {
+        "summary": "Backlinks to a domain",
+        "description": "Return observed backlinks for a target domain.\n\nAudit-fed dataset: every audit run by SEO Score API customers contributes\nobservations. Not a comprehensive backlink index — see `data_caveat` in the\nresponse. Requires Basic plan ($15/mo) or higher.",
+        "operationId": "backlinks",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Target domain (e.g. example.com)",
+              "title": "Domain"
+            },
+            "description": "Target domain (e.g. example.com)",
+            "example": "seoscoreapi.com"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "description": "Max sample rows to return",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Max sample rows to return",
+            "example": 50
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Page analysis"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/history": {
+      "get": {
+        "summary": "Score history for a URL",
+        "description": "Return historical audit scores + summary trend for a URL audited by this key. Requires Starter plan ($5/mo) or higher.",
+        "operationId": "getHistory",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The URL whose audit history to fetch",
+              "title": "Url"
+            },
+            "description": "The URL whose audit history to fetch",
+            "example": "https://seoscoreapi.com"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Max number of points to return",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Max number of points to return",
+            "example": 30
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "UNIX timestamp lower bound (inclusive)",
+              "title": "Since",
+              "type": "number",
+              "nullable": true
+            },
+            "description": "UNIX timestamp lower bound (inclusive)",
+            "example": 1767225600
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "History"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/history/domains": {
+      "get": {
+        "summary": "Every domain you have audited",
+        "description": "List every domain this key has audited with latest score and 30-day trend. Requires Starter plan ($5/mo) or higher.",
+        "operationId": "listHistoryDomains",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "History"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/geo/audit": {
+      "get": {
+        "summary": "Generative engine optimization (GEO) audit",
+        "description": "Run a GEO (Generative Engine Optimization) audit — 26 checks measuring how visible your page is to LLMs. Requires Basic plan ($15/mo) or higher.",
+        "operationId": "geoAudit",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The URL to audit for GEO optimization",
+              "title": "Url"
+            },
+            "description": "The URL to audit for GEO optimization",
+            "example": "https://seoscoreapi.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AI readiness"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/audit/accessibility": {
+      "get": {
+        "summary": "WCAG 2.1 A/AA accessibility audit",
+        "description": "Run an ADA / WCAG 2.1 AA accessibility compliance audit. Paid plans only.\n\nReturns a detailed accessibility report including:\n- Overall compliance score and grade (WCAG 2.1 A/AA rules only)\n- Lawsuit risk assessment (high/medium/low/minimal)\n- Category breakdowns (images, forms, contrast, keyboard, ARIA, etc.)\n- `violations`: WCAG 2.1 AA failures, with affected elements and a plain-English fix\n- `best_practices`: axe best-practice findings (e.g. heading-order). Not WCAG\n  requirements, so they never lower the score or raise the risk level\n- `needs_review`: checks axe couldn't decide automatically, with what to verify by hand.\n  They are excluded from the score rather than counted as failures\n- `priorities`: WCAG violations first, then best practices. `severity` maps from axe\n  `impact` one-to-one: critical→critical, serious→high, moderate→medium, minor→low\n  (best practices are always low)\n\n**Limits.** ADA audits have their own monthly allowance (`ada_monthly`: Starter 5,\nBasic 20, Pro 100, Ultra 500), separate from your audit quota. Each key may run\n20 ADA audits per minute and 2 at a time; the tier `rpm` does not apply here.\n`GET /usage` reports `ada_usage_this_month` and `ada_remaining`.\nA 429 includes `Retry-After`, and a 429 is never counted against `ada_monthly`\n(nor is any failed audit).\n\n**Errors.** A page we can't load returns **422** with `detail` (message) and\n`reason`: `blocked` (the site refused our crawler), `timeout`, `dns`, `tls`,\n`unreachable`, `not_found`, `http_error`, `non_html`, `redirect_loop`,\n`blocked_url`, `load_failed`. A URL we refuse up front (private/internal address,\nmalformed URL) is **400** with `reason` `blocked_url` / `invalid_url`. A **502**\nmeans the failure was on our side.\n\nUses the axe-core accessibility engine (industry standard) to check\nagainst WCAG 2.1 Level AA — the standard referenced in most ADA lawsuits.",
+        "operationId": "accessibilityAudit",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The URL to audit for ADA/WCAG compliance",
+              "title": "Url"
+            },
+            "description": "The URL to audit for ADA/WCAG compliance",
+            "example": "https://seoscoreapi.com"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "`trackers` adds the tracker and pixel inventory to the report",
+              "title": "Include",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "`trackers` adds the tracker and pixel inventory to the report",
+            "example": "trackers"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Accessibility"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/geo/brand-probe": {
+      "post": {
+        "summary": "Ask AI models about your brand",
+        "description": "Probe LLMs to measure how often your brand is mentioned in AI responses. Requires Basic plan ($15/mo) or higher.\n\nSend JSON: {\"brand\": \"MyBrand\", \"domain\": \"mybrand.com\", \"prompts\": [\"What are the best X?\"], \"models\": [\"claude\", \"nova\"], \"runs_per_prompt\": 3}",
+        "operationId": "geoBrandProbe",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "brand": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string"
+                  },
+                  "prompts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "models": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "runs_per_prompt": {
+                    "type": "integer",
+                    "default": 3
+                  }
+                },
+                "required": [
+                  "brand"
+                ]
+              },
+              "example": {
+                "brand": "MyBrand",
+                "domain": "mybrand.com",
+                "prompts": [
+                  "What are the best X?"
+                ],
+                "models": [
+                  "claude",
+                  "nova"
+                ],
+                "runs_per_prompt": 3
+              }
+            }
+          }
+        },
+        "tags": [
+          "AI readiness"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/trackers": {
+      "post": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Create Citation Tracker",
+        "description": "Track a brand's visibility in AI answers. Requires Starter ($5/mo) or higher.\n\nSend JSON: {\"brand\": \"Acme\", \"domains\": [\"acme.com\"], \"prompts\": [\"best CRM for agencies\"],\n\"competitors\": [\"Rival\"], \"engines\": [\"chatgpt\",\"gemini\",\"perplexity\",\"claude\"],\n\"samples\": 3, \"cadence\": \"weekly\", \"webhook_url\": \"https://...\"}\n\n**No prompts yet?** Leave `prompts` out and send `\"starter\": {\"topic\": \"CRM\",\n\"audience\": \"agencies\"}` instead. The tracker is created with a starter set built\nfrom `topic`, your `brand` and `competitors` (the same list\n`GET /citations/prompts/starter` returns), cut to the tracked prompts your plan has\nleft and to what one run can spend of your monthly checks at the tracker's engines\nand samples. With no `cadence`, a starter tracker runs weekly when the allowance\ncovers a month of weekly runs, otherwise monthly. The response's `starter` block\nsays how many were generated and kept, the checks per run and the cadence chosen.\nEdit them later with `PATCH`.\n\nMonthly allowance (checks / tracked prompts): Starter 150 / 15, Basic 500 / 30,\nPro 1,500 / 75, Ultra 4,000 / 200. A check is one prompt on one engine, sampled once.",
+        "operationId": "createCitationTracker",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "brand": {
+                    "type": "string"
+                  },
+                  "prompts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The questions to ask the AI engines."
+                  },
+                  "engines": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "chatgpt",
+                        "gemini",
+                        "perplexity",
+                        "claude"
+                      ]
+                    }
+                  },
+                  "competitors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "samples": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "default": 3
+                  },
+                  "cadence": {
+                    "type": "string",
+                    "enum": [
+                      "daily",
+                      "weekly",
+                      "monthly",
+                      "manual"
+                    ]
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "https only."
+                  },
+                  "starter": {
+                    "type": "object",
+                    "description": "Send instead of prompts to start from a generated set.",
+                    "properties": {
+                      "topic": {
+                        "type": "string"
+                      },
+                      "audience": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "brand"
+                ]
+              },
+              "example": {
+                "brand": "Acme",
+                "domains": [
+                  "acme.com"
+                ],
+                "prompts": [
+                  "best CRM for agencies"
+                ],
+                "competitors": [
+                  "Rival"
+                ],
+                "engines": [
+                  "chatgpt",
+                  "gemini",
+                  "perplexity",
+                  "claude"
+                ],
+                "samples": 3,
+                "cadence": "weekly"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "List Citation Trackers",
+        "description": "List this key's citation trackers.\n\n`usage` reports the month and any top-up: `checks_limit`, `checks_used` and\n`checks_remaining` are the plan's monthly allowance; `topup_checks_remaining` is the\npurchased balance (spent only after the month's checks, never reset, expires 12 months\nafter purchase: `topup_next_expiry`); `checks_available` is what a run can spend now.\nThe same block is on `GET /usage` as `citations`.",
+        "operationId": "listCitationTrackers",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/trackers/{tracker_id}": {
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Get Citation Tracker",
+        "description": "Read one tracker.",
+        "operationId": "getCitationTracker",
+        "parameters": [
+          {
+            "name": "tracker_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tracker Id"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Update Citation Tracker",
+        "description": "Edit a tracker's prompts, engines, competitors, samples, cadence or webhook.",
+        "operationId": "updateCitationTracker",
+        "parameters": [
+          {
+            "name": "tracker_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tracker Id"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The questions to ask the AI engines."
+                  },
+                  "engines": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "chatgpt",
+                        "gemini",
+                        "perplexity",
+                        "claude"
+                      ]
+                    }
+                  },
+                  "competitors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "samples": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "default": 3
+                  },
+                  "cadence": {
+                    "type": "string",
+                    "enum": [
+                      "daily",
+                      "weekly",
+                      "monthly",
+                      "manual"
+                    ]
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "https only."
+                  }
+                }
+              },
+              "example": {
+                "prompts": [
+                  "best CRM for agencies"
+                ],
+                "cadence": "monthly"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Delete Citation Tracker",
+        "description": "Stop tracking a brand. Run history is kept until its retention expires.",
+        "operationId": "deleteCitationTracker",
+        "parameters": [
+          {
+            "name": "tracker_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tracker Id"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/trackers/{tracker_id}/run": {
+      "post": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Run Citation Tracker",
+        "description": "Run a tracker now. Every prompt × engine × sample counts as one check.\n\nA run needs all of its checks up front: the month's remaining allowance plus any\ntop-up balance. If that is short the run is refused with 429 and nothing is spent.\nBuy more with `POST /citations/topups/checkout`. A check whose engine returned an\nerror is not counted against either balance.\n\nA run that finishes within 45 seconds returns its summary (200). A longer one returns\n**202** with `run_id`, `status: \"running\"` and `poll`; it keeps running, and\n`GET /citations/runs/{run_id}` reports `completed` with the results when it is done.",
+        "operationId": "runCitationTracker",
+        "parameters": [
+          {
+            "name": "tracker_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tracker Id"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/runs/{run_id}": {
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Get Citation Run",
+        "description": "Run status plus every per-prompt, per-engine result.",
+        "operationId": "getCitationRun",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Run Id"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/trackers/{tracker_id}/history": {
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Citation Tracker History",
+        "description": "Timeseries of mention rate, citation rate, share of voice and average position.",
+        "operationId": "citationTrackerHistory",
+        "parameters": [
+          {
+            "name": "tracker_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tracker Id"
+            },
+            "example": 1
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 90,
+              "title": "Days"
+            },
+            "example": 90
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/check": {
+      "post": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Citation Check",
+        "description": "One-off check — no tracker, metered per check. Paid plans only (Starter and up).\n\nSend JSON: {\"brand\": \"Acme\", \"domains\": [\"acme.com\"], \"prompt\": \"best CRM for agencies\",\n\"engines\": [\"chatgpt\"], \"samples\": 1, \"competitors\": [\"Rival\"]}",
+        "operationId": "citationCheck",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "brand": {
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "maxLength": 400
+                  },
+                  "domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "engines": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "chatgpt",
+                        "gemini",
+                        "perplexity",
+                        "claude"
+                      ]
+                    }
+                  },
+                  "samples": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "default": 1
+                  },
+                  "competitors": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "brand",
+                  "prompt"
+                ]
+              },
+              "example": {
+                "brand": "Acme",
+                "domains": [
+                  "acme.com"
+                ],
+                "prompt": "best CRM for agencies",
+                "engines": [
+                  "chatgpt"
+                ],
+                "samples": 1
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/topups": {
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Citation Topups Info",
+        "description": "Top-up packs for AI citation checks, and this account's balance.\n\nA top-up is a one-time purchase for when the month's checks run out: 500 checks for\n$10 or 2,000 for $36 (`packs` is the live list). Top-up checks are spent only after\nthe plan's monthly allowance, do not reset on the 1st, and expire 12 months after\npurchase. `can_buy` is false on the free tier, which cannot run citation checks.",
+        "operationId": "citationTopups",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/auto-reload": {
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Citation Auto Reload Get",
+        "description": "Auto-reload setting for AI citation checks, and this month's use.\n\nRead-only. Auto-reload is **off unless you turn it on, and it can only be turned on\nor changed from the dashboard** (signed in), never with an API key, because turning it\non authorizes charges. When on, a run that needs more checks than you have is not\nrefused: we charge the card on your subscription for one pack (`pack`: \"500\" = $10,\n\"2000\" = $36), add the checks and let the run go ahead, every time you run out.\n`reloads_this_month`, `charged_this_month_usd` and `failed_this_month` show what has\nhappened so far; after 2 failed charges in a row it pauses (`paused`) until you save\nthe setting on the dashboard again.",
+        "operationId": "citationAutoReload",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/prompts/starter": {
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Starter Citation Prompts",
+        "description": "A starter set of prompts to track, from your topic, brand, competitors and audience.\n\nCovers the six kinds of question buyers ask an AI assistant: `direct_recommendation`,\n`comparison`, `alternatives`, `feature_specific`, `use_case` and `pricing`. Built from\nfixed templates, not a model: the same inputs always return the same list, nothing is\nfetched, and no AI check is spent. A template that needs an input you didn't send is\nleft out, so with no `competitors` the comparison prompts are generic.\n\n`prompts` is the flat list, interleaved across categories, ready to send as `prompts`\nto `POST /citations/trackers`. `categories` groups them; `items` flags which ones name\nyour brand or a competitor.\n\nThe default is two per category, 12 prompts. Run on the default four engines at three\nsamples that is 144 checks, which fits one run a month on Starter (150 checks).\n\nWorks on every plan and is not metered. Treat the list as a first draft: rewrite it in\nthe words your buyers use. To read prompts off a website instead, use\n`GET /citations/prompts/suggest`.",
+        "operationId": "starterCitationPrompts",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "What you sell, as a buyer would type it, singular: `SEO audit API`, `emergency plumber in Grand Rapids`, `standing desk`",
+              "title": "Topic"
+            },
+            "description": "What you sell, as a buyer would type it, singular: `SEO audit API`, `emergency plumber in Grand Rapids`, `standing desk`",
+            "example": "SEO audit API"
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Your brand name. Adds the reputation and pricing questions that name you",
+              "title": "Brand",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "Your brand name. Adds the reputation and pricing questions that name you",
+            "example": "Acme"
+          },
+          {
+            "name": "competitors",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Comma-separated competitor names (up to 5). Adds `X vs Y` and `alternatives to X`",
+              "title": "Competitors",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "Comma-separated competitor names (up to 5). Adds `X vs Y` and `alternatives to X`",
+            "example": "Rival One,Rival Two"
+          },
+          {
+            "name": "audience",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Who buys it, plural: `marketing agencies`, `homeowners`",
+              "title": "Audience",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "Who buys it, plural: `marketing agencies`, `homeowners`",
+            "example": "marketing agencies"
+          },
+          {
+            "name": "features",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Comma-separated features buyers ask about (up to 6): `a free tier, PDF reports`",
+              "title": "Features",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "Comma-separated features buyers ask about (up to 6): `a free tier, PDF reports`",
+            "example": "a free tier,PDF reports"
+          },
+          {
+            "name": "use_cases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Comma-separated jobs it is bought for (up to 6): `CI/CD checks`",
+              "title": "Use Cases",
+              "type": "string",
+              "nullable": true
+            },
+            "description": "Comma-separated jobs it is bought for (up to 6): `CI/CD checks`",
+            "example": "CI/CD checks"
+          },
+          {
+            "name": "per_category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 1,
+              "description": "Prompts per category (default 2 = 12 prompts; 3 = 18)",
+              "default": 2,
+              "title": "Per Category"
+            },
+            "description": "Prompts per category (default 2 = 12 prompts; 3 = 18)",
+            "example": 2
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Cut the list to this many, keeping the spread across categories (use your plan's tracked-prompt limit)",
+              "title": "Limit",
+              "type": "integer",
+              "maximum": 60,
+              "minimum": 1,
+              "nullable": true
+            },
+            "description": "Cut the list to this many, keeping the spread across categories (use your plan's tracked-prompt limit)",
+            "example": 12
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/citations/prompts/suggest": {
+      "get": {
+        "tags": [
+          "AI Citations"
+        ],
+        "summary": "Suggest Citation Prompts",
+        "description": "Suggest prompts to track, read off what the site actually says it does.",
+        "operationId": "suggestCitationPrompts",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Domain"
+            },
+            "example": "seoscoreapi.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/audit/competitive": {
+      "post": {
+        "summary": "Your page against a competitor's for one keyword",
+        "description": "Head-to-head SEO comparison with keyword-relevance scoring. Requires Pro plan ($39/mo) or higher.\n\nSend JSON: {\"url\": \"https://yoursite.com/page\", \"competitor_url\": \"https://competitor.com/page\", \"keyword\": \"target keyword\"}",
+        "operationId": "competitiveAudit",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "competitor_url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "keyword": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "url",
+                  "competitor_url",
+                  "keyword"
+                ]
+              },
+              "example": {
+                "url": "https://yoursite.com/page",
+                "competitor_url": "https://competitor.com/page",
+                "keyword": "target keyword"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Audit"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/geo/monitor": {
+      "post": {
+        "summary": "Monitor a URL's GEO score (optional webhook)",
+        "description": "Create a GEO monitor for a URL. Requires Basic plan or higher.\n\nSend JSON: {\"url\": \"https://example.com\", \"frequency\": \"weekly\", \"alert_threshold\": -5, \"webhook_url\": \"https://...\"}",
+        "operationId": "createGeoMonitor",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "frequency": {
+                    "type": "string",
+                    "default": "weekly"
+                  },
+                  "alert_threshold": {
+                    "type": "number"
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              },
+              "example": {
+                "url": "https://example.com",
+                "frequency": "weekly",
+                "alert_threshold": -5
+              }
+            }
+          }
+        },
+        "tags": [
+          "Monitoring"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Remove a GEO monitor",
+        "description": "Remove a GEO monitor. Send JSON: {\"url\": \"https://example.com\"}",
+        "operationId": "deleteGeoMonitor",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              },
+              "example": {
+                "url": "https://example.com"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Monitoring"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/geo/monitors": {
+      "get": {
+        "summary": "List GEO monitors",
+        "description": "List your active GEO monitors.",
+        "operationId": "listGeoMonitors",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Monitoring"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/geo/monitor/{monitor_id}/history": {
+      "get": {
+        "summary": "GEO monitor history",
+        "description": "Get score history for a GEO monitor.",
+        "operationId": "geoMonitorHistory",
+        "parameters": [
+          {
+            "name": "monitor_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Monitor Id"
+            },
+            "example": 1
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            },
+            "example": 1
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Per Page"
+            },
+            "example": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Monitoring"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/monitors": {
+      "post": {
+        "summary": "Monitor a URL's score (optional webhook)",
+        "description": "Set up SEO score monitoring for a URL. Paid plans only.\n\nSend JSON:\n  {\n    \"url\": \"https://example.com\",\n    \"frequency\": \"daily\" | \"weekly\",\n    \"webhook_url\": \"https://hooks.slack.com/services/...\" (optional),\n    \"alert_threshold\": 5  (optional, points; default 5)\n  }\n\nIf webhook_url is a Slack incoming-webhook URL it is auto-formatted\nas a Slack Block Kit message; otherwise the raw event JSON is POSTed.",
+        "operationId": "createMonitor",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "frequency": {
+                    "type": "string",
+                    "enum": [
+                      "daily",
+                      "weekly"
+                    ],
+                    "default": "daily"
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Optional. A Slack incoming-webhook URL gets a formatted message."
+                  },
+                  "alert_threshold": {
+                    "type": "number",
+                    "default": 5,
+                    "description": "Points."
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              },
+              "example": {
+                "url": "https://seoscoreapi.com",
+                "frequency": "weekly",
+                "webhook_url": "https://hooks.slack.com/services/T000/B000/XXXX",
+                "alert_threshold": 5
+              }
+            }
+          }
+        },
+        "tags": [
+          "Monitoring"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "List score monitors",
+        "description": "List your active monitors.",
+        "operationId": "listMonitors",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Monitoring"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Remove a score monitor",
+        "description": "Remove a monitor. Send JSON: {\"url\": \"https://example.com\"}",
+        "operationId": "deleteMonitor",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              },
+              "example": {
+                "url": "https://example.com"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Monitoring"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/scoreboard/opt-out": {
+      "put": {
+        "summary": "Opt your audits in or out of the public scoreboard",
+        "description": "Opt in or out of the public SEO scoreboard.",
+        "operationId": "scoreboardOptOut",
+        "parameters": [
+          {
+            "name": "opt_out",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "description": "true = hide from scoreboard, false = show",
+              "title": "Opt Out"
+            },
+            "description": "true = hide from scoreboard, false = show",
+            "example": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CrawlRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "title": "Url",
+            "description": "Where to start (e.g., https://example.com)"
+          },
+          "max_pages": {
+            "title": "Max Pages",
+            "description": "Fewer pages than your plan's cap, if you want",
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "nullable": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "CrawlRequest"
+      },
+      "DeepAuditRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Page to audit (scheme optional). Must be a public http(s) address."
+          },
+          "business_type": {
+            "title": "Business Type",
+            "description": "Tunes which checks apply: saas | local_service | ecommerce | storefront | blog | publisher. Inferred when omitted.",
+            "type": "string",
+            "nullable": true
+          },
+          "is_local": {
+            "title": "Is Local",
+            "description": "Force local-business checks (NAP, LocalBusiness schema).",
+            "type": "boolean",
+            "nullable": true
+          },
+          "webhook_url": {
+            "title": "Webhook Url",
+            "description": "Optional public URL POSTed once when the job completes. Single attempt, no retries, no signature: keep polling as the source of truth.",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "DeepAuditRequest",
+        "description": "Start a Deep Site Audit. Unknown fields are passed to the engine untouched.",
+        "example": {
+          "business_type": "local_service",
+          "url": "https://example.com",
+          "webhook_url": "https://yourapp.example/hooks/deep-audit"
+        }
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Check": {
+        "type": "object",
+        "description": "One check. Always has a name and a status; other fields depend on the check.",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "description": "pass, warning, fail or info"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "CategoryBlock": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Check"
+            }
+          }
+        }
+      },
+      "Priority": {
+        "type": "object",
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "category": {
+            "type": "string"
+          },
+          "issue": {
+            "type": "string"
+          },
+          "fix": {
+            "type": "string",
+            "description": "What to change."
+          },
+          "plain_english": {
+            "type": "string",
+            "description": "One sentence without jargon."
+          },
+          "who_fixes_it": {
+            "type": "string",
+            "enum": [
+              "developer",
+              "content",
+              "marketing"
+            ]
+          }
+        }
+      },
+      "AiReadability": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "ai_readability_score": {
+            "type": "number",
+            "description": "0 to 100."
+          },
+          "ai_readability_grade": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "object",
+            "description": "crawl_accessibility, structural_markup, content_extractability, ai_discoverability. Each has score, max and checks.",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                },
+                "checks": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Check"
+                  }
+                }
+              }
+            }
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      },
+      "AuditResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number",
+            "description": "Overall SEO score, 0 to 100."
+          },
+          "grade": {
+            "type": "string",
+            "description": "Letter grade, A+ to F."
+          },
+          "response_code": {
+            "type": "integer",
+            "description": "HTTP status the audited page returned."
+          },
+          "response_time": {
+            "type": "string"
+          },
+          "html_truncated": {
+            "type": "boolean"
+          },
+          "audit": {
+            "type": "object",
+            "description": "Category breakdown: meta, technical, social, performance, accessibility.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CategoryBlock"
+            }
+          },
+          "priorities": {
+            "type": "array",
+            "description": "Fixes in priority order.",
+            "items": {
+              "$ref": "#/components/schemas/Priority"
+            }
+          },
+          "ai_readability": {
+            "$ref": "#/components/schemas/AiReadability"
+          },
+          "core_web_vitals": {
+            "type": "object",
+            "description": "Measured with `cwv=true`; `status` is `unavailable` with a `reason` when there is no measurement.",
+            "additionalProperties": true
+          },
+          "sxo": {
+            "type": "object",
+            "description": "SXO score block (paid plans).",
+            "properties": {
+              "sxo_score": {
+                "type": "number"
+              },
+              "sxo_grade": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "checks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Check"
+                }
+              }
+            }
+          },
+          "aeo": {
+            "type": "object",
+            "description": "AEO score block (paid plans).",
+            "properties": {
+              "aeo_score": {
+                "type": "number"
+              },
+              "aeo_grade": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "checks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Check"
+                }
+              }
+            }
+          },
+          "aio": {
+            "type": "object",
+            "description": "AIO score block (paid plans).",
+            "properties": {
+              "aio_score": {
+                "type": "number"
+              },
+              "aio_grade": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "checks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Check"
+                }
+              }
+            }
+          },
+          "history": {
+            "type": "object",
+            "description": "Change since the previous audit of this URL by the same key (paid plans).",
+            "additionalProperties": true
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Machine-readable cause when the page could not be loaded: blocked, timeout, dns, tls, unreachable, not_found, http_error, non_html, redirect_loop, blocked_url, invalid_url, load_failed."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "Your SEO Score API key. Free at https://seoscoreapi.com/#signup."
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "tier",
+        "type": "text",
+        "label": "Plan"
+    },
+    {
+        "name": "usage",
+        "type": "any",
+        "label": "Usage"
+    },
+    {
+        "name": "limits",
+        "type": "any",
+        "label": "Limits"
+    },
+    {
+        "name": "citations",
+        "type": "any",
+        "label": "AI Citation Checks"
+    }
+]

@@ -1,0 +1,62 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL"
+    },
+    {
+        "name": "score",
+        "type": "number",
+        "label": "Conversion Score (0-100)"
+    },
+    {
+        "name": "grade",
+        "type": "text",
+        "label": "Grade"
+    },
+    {
+        "name": "page_type",
+        "type": "text",
+        "label": "Page Type"
+    },
+    {
+        "name": "priorities",
+        "type": "array",
+        "label": "Priorities",
+        "spec": {
+            "type": "collection",
+            "spec": [
+                {
+                    "name": "severity",
+                    "type": "text",
+                    "label": "Severity"
+                },
+                {
+                    "name": "category",
+                    "type": "text",
+                    "label": "Category"
+                },
+                {
+                    "name": "issue",
+                    "type": "text",
+                    "label": "Issue"
+                },
+                {
+                    "name": "fix",
+                    "type": "text",
+                    "label": "Fix"
+                },
+                {
+                    "name": "plain_english",
+                    "type": "text",
+                    "label": "Plain English"
+                },
+                {
+                    "name": "who_fixes_it",
+                    "type": "text",
+                    "label": "Who Fixes It"
+                }
+            ]
+        }
+    }
+]

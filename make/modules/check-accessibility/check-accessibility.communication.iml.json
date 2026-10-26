@@ -1,0 +1,10 @@
+{
+    "url": "/audit/accessibility",
+    "method": "GET",
+    "qs": {
+        "url": "{{parameters.url}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

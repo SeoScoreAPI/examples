@@ -1,0 +1,99 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL"
+    },
+    {
+        "name": "score",
+        "type": "number",
+        "label": "Accessibility Score (0-100)"
+    },
+    {
+        "name": "grade",
+        "type": "text",
+        "label": "Grade"
+    },
+    {
+        "name": "standard",
+        "type": "text",
+        "label": "Standard"
+    },
+    {
+        "name": "summary",
+        "type": "collection",
+        "label": "Summary",
+        "spec": [
+            {
+                "name": "violations",
+                "type": "uinteger",
+                "label": "WCAG A/AA Issues Found"
+            },
+            {
+                "name": "passes",
+                "type": "uinteger",
+                "label": "Passed Checks"
+            },
+            {
+                "name": "incomplete",
+                "type": "uinteger",
+                "label": "Needs Review"
+            }
+        ]
+    },
+    {
+        "name": "priorities",
+        "type": "array",
+        "label": "Priorities",
+        "spec": {
+            "type": "collection",
+            "spec": [
+                {
+                    "name": "severity",
+                    "type": "text",
+                    "label": "Severity"
+                },
+                {
+                    "name": "category",
+                    "type": "text",
+                    "label": "Category"
+                },
+                {
+                    "name": "issue",
+                    "type": "text",
+                    "label": "Issue"
+                },
+                {
+                    "name": "fix",
+                    "type": "text",
+                    "label": "Fix"
+                },
+                {
+                    "name": "plain_english",
+                    "type": "text",
+                    "label": "Plain English"
+                },
+                {
+                    "name": "who_fixes_it",
+                    "type": "text",
+                    "label": "Who Fixes It"
+                }
+            ]
+        }
+    },
+    {
+        "name": "violations",
+        "type": "any",
+        "label": "Violations"
+    },
+    {
+        "name": "best_practices",
+        "type": "any",
+        "label": "Best Practices"
+    },
+    {
+        "name": "needs_review",
+        "type": "any",
+        "label": "Needs Review"
+    }
+]

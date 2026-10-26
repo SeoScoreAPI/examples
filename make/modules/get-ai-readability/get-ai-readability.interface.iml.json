@@ -1,0 +1,27 @@
+[
+    {
+        "name": "url",
+        "type": "url",
+        "label": "URL"
+    },
+    {
+        "name": "ai_readability_score",
+        "type": "number",
+        "label": "AI Readability Score (0-100)"
+    },
+    {
+        "name": "ai_readability_grade",
+        "type": "text",
+        "label": "Grade"
+    },
+    {
+        "name": "categories",
+        "type": "any",
+        "label": "Categories"
+    },
+    {
+        "name": "recommendations",
+        "type": "any",
+        "label": "Recommendations"
+    }
+]

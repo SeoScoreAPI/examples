@@ -1,0 +1,192 @@
+{
+    "fileVersion": 1,
+    "generalCodeFiles": {
+        "base": "general/base.iml.json",
+        "common": "general/common.json",
+        "readme": "README.md",
+        "groups": "general/groups.json"
+    },
+    "components": {
+        "connection": {
+            "seoscoreapi": {
+                "label": "SEO Score API",
+                "connectionType": "basic",
+                "codeFiles": {
+                    "communication": "connections/seoscoreapi/seoscoreapi.communication.iml.json",
+                    "params": "connections/seoscoreapi/seoscoreapi.params.iml.json",
+                    "common": "connections/seoscoreapi/seoscoreapi.common.json"
+                }
+            }
+        },
+        "rpc": {},
+        "module": {
+            "auditUrl": {
+                "label": "Audit a URL",
+                "description": "Scores a page for SEO, AI readability and answer-engine readiness and returns a prioritized fix list.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/audit-url/audit-url.communication.iml.json",
+                    "staticParams": "modules/audit-url/audit-url.static-params.iml.json",
+                    "mappableParams": "modules/audit-url/audit-url.mappable-params.iml.json",
+                    "interface": "modules/audit-url/audit-url.interface.iml.json",
+                    "samples": "modules/audit-url/audit-url.samples.iml.json"
+                },
+                "actionCrud": "read"
+            },
+            "checkAccessibility": {
+                "label": "Check a URL's Accessibility",
+                "description": "Finds the WCAG 2.1 A/AA issues an automated scan can detect on a page, with fixes. Paid plans. Automated testing does not catch everything.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/check-accessibility/check-accessibility.communication.iml.json",
+                    "staticParams": "modules/check-accessibility/check-accessibility.static-params.iml.json",
+                    "mappableParams": "modules/check-accessibility/check-accessibility.mappable-params.iml.json",
+                    "interface": "modules/check-accessibility/check-accessibility.interface.iml.json",
+                    "samples": "modules/check-accessibility/check-accessibility.samples.iml.json"
+                },
+                "actionCrud": "read"
+            },
+            "getAiReadability": {
+                "label": "Get a URL's AI Readability",
+                "description": "Scores how well AI systems and answer engines can read and reuse a page.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/get-ai-readability/get-ai-readability.communication.iml.json",
+                    "staticParams": "modules/get-ai-readability/get-ai-readability.static-params.iml.json",
+                    "mappableParams": "modules/get-ai-readability/get-ai-readability.mappable-params.iml.json",
+                    "interface": "modules/get-ai-readability/get-ai-readability.interface.iml.json",
+                    "samples": "modules/get-ai-readability/get-ai-readability.samples.iml.json"
+                },
+                "actionCrud": "read"
+            },
+            "scoreConversion": {
+                "label": "Score a Page's Conversion",
+                "description": "Scores how well a page turns visitors into leads or sales and lists what to change.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/score-conversion/score-conversion.communication.iml.json",
+                    "staticParams": "modules/score-conversion/score-conversion.static-params.iml.json",
+                    "mappableParams": "modules/score-conversion/score-conversion.mappable-params.iml.json",
+                    "interface": "modules/score-conversion/score-conversion.interface.iml.json",
+                    "samples": "modules/score-conversion/score-conversion.samples.iml.json"
+                },
+                "actionCrud": "read"
+            },
+            "batchAudit": {
+                "label": "Audit Multiple URLs",
+                "description": "Audits up to 10 URLs in one request. Paid plans. Each URL uses one audit.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/batch-audit/batch-audit.communication.iml.json",
+                    "staticParams": "modules/batch-audit/batch-audit.static-params.iml.json",
+                    "mappableParams": "modules/batch-audit/batch-audit.mappable-params.iml.json",
+                    "interface": "modules/batch-audit/batch-audit.interface.iml.json",
+                    "samples": "modules/batch-audit/batch-audit.samples.iml.json"
+                },
+                "actionCrud": "read"
+            },
+            "getUsage": {
+                "label": "Get Usage",
+                "description": "Returns this key's plan, audits used and remaining limits.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/get-usage/get-usage.communication.iml.json",
+                    "staticParams": "modules/get-usage/get-usage.static-params.iml.json",
+                    "mappableParams": "modules/get-usage/get-usage.mappable-params.iml.json",
+                    "interface": "modules/get-usage/get-usage.interface.iml.json",
+                    "samples": "modules/get-usage/get-usage.samples.iml.json"
+                },
+                "actionCrud": "read"
+            },
+            "createMonitor": {
+                "label": "Create a Score Monitor",
+                "description": "Re-audits a URL daily or weekly and alerts by email, and optionally a webhook, when the score moves. Paid plans.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/create-monitor/create-monitor.communication.iml.json",
+                    "staticParams": "modules/create-monitor/create-monitor.static-params.iml.json",
+                    "mappableParams": "modules/create-monitor/create-monitor.mappable-params.iml.json",
+                    "interface": "modules/create-monitor/create-monitor.interface.iml.json",
+                    "samples": "modules/create-monitor/create-monitor.samples.iml.json"
+                },
+                "actionCrud": "create"
+            },
+            "listMonitors": {
+                "label": "List Score Monitors",
+                "description": "Lists this key's active score monitors.",
+                "moduleType": "search",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/list-monitors/list-monitors.communication.iml.json",
+                    "staticParams": "modules/list-monitors/list-monitors.static-params.iml.json",
+                    "mappableParams": "modules/list-monitors/list-monitors.mappable-params.iml.json",
+                    "interface": "modules/list-monitors/list-monitors.interface.iml.json",
+                    "samples": "modules/list-monitors/list-monitors.samples.iml.json"
+                }
+            },
+            "deleteMonitor": {
+                "label": "Delete a Score Monitor",
+                "description": "Stops monitoring a URL.",
+                "moduleType": "action",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/delete-monitor/delete-monitor.communication.iml.json",
+                    "staticParams": "modules/delete-monitor/delete-monitor.static-params.iml.json",
+                    "mappableParams": "modules/delete-monitor/delete-monitor.mappable-params.iml.json",
+                    "interface": "modules/delete-monitor/delete-monitor.interface.iml.json",
+                    "samples": "modules/delete-monitor/delete-monitor.samples.iml.json"
+                },
+                "actionCrud": "delete"
+            },
+            "watchScoreChanges": {
+                "label": "Watch Score Changes",
+                "description": "Triggers when a monitored page's SEO score moves by the alert threshold or more. Paid plans.",
+                "moduleType": "instant_trigger",
+                "connection": null,
+                "codeFiles": {
+                    "communication": "modules/watch-score-changes/watch-score-changes.communication.iml.json",
+                    "staticParams": "modules/watch-score-changes/watch-score-changes.static-params.iml.json",
+                    "mappableParams": "modules/watch-score-changes/watch-score-changes.mappable-params.iml.json",
+                    "interface": "modules/watch-score-changes/watch-score-changes.interface.iml.json",
+                    "samples": "modules/watch-score-changes/watch-score-changes.samples.iml.json"
+                },
+                "webhook": "scoreChange"
+            },
+            "makeApiCall": {
+                "label": "Make an API Call",
+                "description": "Performs an arbitrary authorized SEO Score API call.",
+                "moduleType": "universal",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "modules/make-api-call/make-api-call.communication.iml.json",
+                    "staticParams": "modules/make-api-call/make-api-call.static-params.iml.json",
+                    "mappableParams": "modules/make-api-call/make-api-call.mappable-params.iml.json",
+                    "interface": "modules/make-api-call/make-api-call.interface.iml.json",
+                    "samples": "modules/make-api-call/make-api-call.samples.iml.json"
+                }
+            }
+        },
+        "function": {},
+        "webhook": {
+            "scoreChange": {
+                "label": "Score Change",
+                "webhookType": "web",
+                "connection": "seoscoreapi",
+                "codeFiles": {
+                    "communication": "webhooks/scoreChange/scoreChange.communication.iml.json",
+                    "params": "webhooks/scoreChange/scoreChange.params.iml.json",
+                    "attach": "webhooks/scoreChange/scoreChange.attach.iml.json",
+                    "detach": "webhooks/scoreChange/scoreChange.detach.iml.json"
+                }
+            }
+        }
+    },
+    "origins": []
+}

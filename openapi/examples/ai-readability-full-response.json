@@ -1,0 +1,214 @@
+{
+  "url": "https://seoscoreapi.com",
+  "ai_readability_score": 95,
+  "ai_readability_grade": "A+",
+  "categories": {
+    "crawl_accessibility": {
+      "score": 25,
+      "max": 25,
+      "checks": [
+        {
+          "name": "ssr_content",
+          "status": "pass",
+          "score": 8,
+          "max": 8,
+          "detail": "Server-rendered content detected"
+        },
+        {
+          "name": "ai_bot_access",
+          "status": "pass",
+          "score": 5,
+          "max": 5,
+          "detail": "All major AI bots allowed"
+        },
+        {
+          "name": "llms_txt",
+          "status": "pass",
+          "score": 4,
+          "max": 4,
+          "detail": "llms.txt found"
+        },
+        {
+          "name": "https",
+          "status": "pass",
+          "score": 2,
+          "max": 2,
+          "detail": "HTTPS enabled"
+        },
+        {
+          "name": "response_time",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "0.05s"
+        },
+        {
+          "name": "canonical",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "https://seoscoreapi.com"
+        }
+      ]
+    },
+    "structural_markup": {
+      "score": 24,
+      "max": 25,
+      "checks": [
+        {
+          "name": "schema_jsonld",
+          "status": "pass",
+          "score": 8,
+          "max": 8,
+          "detail": "Types: SoftwareApplication, Organization, FAQPage, Product, WebSite"
+        },
+        {
+          "name": "semantic_html",
+          "status": "pass",
+          "score": 5,
+          "max": 5,
+          "detail": "46 semantic elements, 22 divs (68% ratio)"
+        },
+        {
+          "name": "heading_hierarchy",
+          "status": "pass",
+          "score": 4,
+          "max": 4,
+          "detail": "Well-structured heading hierarchy"
+        },
+        {
+          "name": "lists_tables",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "21 list/table elements"
+        },
+        {
+          "name": "image_alt",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "100% of images have alt text"
+        },
+        {
+          "name": "meta_description",
+          "status": "warning",
+          "score": 1,
+          "max": 2,
+          "detail": "179 chars"
+        }
+      ]
+    },
+    "content_extractability": {
+      "score": 26,
+      "max": 30,
+      "checks": [
+        {
+          "name": "answer_first",
+          "status": "pass",
+          "score": 6,
+          "max": 6,
+          "detail": "6/6 sections lead with facts"
+        },
+        {
+          "name": "chunk_friendly",
+          "status": "warning",
+          "score": 3,
+          "max": 6,
+          "detail": "3/6 \u2014 sections sized for RAG chunking"
+        },
+        {
+          "name": "fact_density",
+          "status": "pass",
+          "score": 5,
+          "max": 5,
+          "detail": "24.5 facts per 100 words"
+        },
+        {
+          "name": "reading_ease",
+          "status": "pass",
+          "score": 3,
+          "max": 4,
+          "detail": "Flesch score: 58"
+        },
+        {
+          "name": "content_ratio",
+          "status": "pass",
+          "score": 4,
+          "max": 4,
+          "detail": "91% content-to-boilerplate ratio"
+        },
+        {
+          "name": "freshness",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "JSON-LD dateModified, article:modified_time, Last-Modified header"
+        },
+        {
+          "name": "source_citations",
+          "status": "pass",
+          "score": 2,
+          "max": 2,
+          "detail": "2 outbound links in content"
+        }
+      ]
+    },
+    "ai_discoverability": {
+      "score": 20,
+      "max": 20,
+      "checks": [
+        {
+          "name": "open_graph",
+          "status": "pass",
+          "score": 4,
+          "max": 4,
+          "detail": "5/5 OG tags present"
+        },
+        {
+          "name": "semantic_urls",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "/"
+        },
+        {
+          "name": "in_sitemap",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "Page found in sitemap.xml"
+        },
+        {
+          "name": "internal_links",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "98 internal links"
+        },
+        {
+          "name": "date_modified",
+          "status": "pass",
+          "score": 3,
+          "max": 3,
+          "detail": "JSON-LD dateModified, article:modified_time, Last-Modified header"
+        },
+        {
+          "name": "author_eeat",
+          "status": "pass",
+          "score": 2,
+          "max": 2,
+          "detail": "JSON-LD, meta tag"
+        },
+        {
+          "name": "multi_format",
+          "status": "pass",
+          "score": 2,
+          "max": 2,
+          "detail": "2 alternate format(s)"
+        }
+      ]
+    }
+  },
+  "recommendations": []
+}

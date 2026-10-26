@@ -1,0 +1,16 @@
+[
+    {
+        "name": "urls",
+        "type": "array",
+        "label": "URLs",
+        "required": true,
+        "spec": {
+            "type": "url",
+            "label": "URL"
+        },
+        "validate": {
+            "maxItems": 10
+        },
+        "help": "Up to 10 pages."
+    }
+]
