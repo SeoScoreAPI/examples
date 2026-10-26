@@ -4,7 +4,7 @@ Code examples for integrating [SEO Score API](https://seoscoreapi.com) into your
 
 ## Quick Start
 
-Get a free API key (2 audits/day, no credit card) at [seoscoreapi.com](https://seoscoreapi.com/#signup), or in two calls: the first emails you a 6-digit code, the second returns the key.
+Get a free API key (20 audits a month, no credit card) at [seoscoreapi.com](https://seoscoreapi.com/#signup), or in two calls: the first emails you a 6-digit code, the second returns the key.
 ```bash
 curl -X POST https://seoscoreapi.com/signup \
   -H "Content-Type: application/json" \
@@ -164,7 +164,7 @@ Use our [GitHub Action](https://github.com/SeoScoreAPI/seo-audit-action):
 
 | Plan | Price | Audits | Features |
 |------|-------|--------|----------|
-| Free | $0 | 2/day | Scored on 50+ checks; 2 checks per category and the top 2 fixes in the response |
+| Free | $0 | 20/mo | Scored on 50+ checks; 2 checks per category and the top 2 fixes in the response |
 | Starter | $5/mo | 200/mo | All 80+ checks and fixes, SXO/AEO/AIO scores, monitoring, batch, history |
 | Basic | $15/mo | 1,000/mo | + More monitors |
 | Pro | $39/mo | 5,000/mo | + Priority support |
